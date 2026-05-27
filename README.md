@@ -1,38 +1,38 @@
 # TermSheet
 
-Monorepo da solução **TermSheet**: aplicação web para gestão de deals imobiliários (desafio técnico Intapp / Keepers), com API REST em Spring Boot e frontend Angular 17.
+Monorepo for the **TermSheet** solution: a web application for managing real estate deals (Intapp / Keepers technical challenge), with a Spring Boot REST API and an Angular 17 frontend.
 
-## Objetivo do repositório
+## Repository purpose
 
-Este projeto implementa uma versão enxuta do produto TermSheet descrito em [`challenge.md`](challenge.md):
+This project implements a lean version of the TermSheet product described in [`challenge.md`](challenge.md):
 
-- **Login** com usuário e senha antes de acessar áreas privadas.
-- **Listagem paginada** de deals com dados pré-carregados pela API.
-- **Cadastro** de novos deals (nome, preço de compra, endereço, NOI, descrição; cap rate calculado no backend).
-- **Filtros** por nome e faixa de preço de compra (maior/menor que).
-- **Internacionalização** (pt-BR, en-US, es-ES) e decisões de arquitetura documentadas para o frontend.
+- **Login** with username and password before accessing private areas.
+- **Paginated listing** of deals with data preloaded by the API.
+- **Create** new deals (name, purchase price, address, NOI, description; cap rate calculated on the backend).
+- **Filters** by name and purchase price range (greater than / less than).
+- **Internationalization** (pt-BR, en-US, es-ES) and documented frontend architecture decisions.
 
-O backend fornece autenticação JWT + refresh token em cookie HttpOnly, CRUD de deals e persistência em PostgreSQL. O frontend (`frontend/`) consome a API via proxy em desenvolvimento e organiza o código em libs Nx (`auth`, `i18n`, `termsheet`, `util`).
+The backend provides JWT authentication + HttpOnly refresh-token cookie, deal CRUD, and PostgreSQL persistence. The frontend (`frontend/`) consumes the API through a dev proxy and organizes code in Nx libs (`auth`, `i18n`, `termsheet`, `util`).
 
-Brief original do desafio: [`challenge.md`](challenge.md).
+Original challenge brief: [`challenge.md`](challenge.md).
 
-## Como executar (desenvolvimento)
+## How to run (development)
 
-Recomendado: subir o **backend** primeiro e, em outro terminal, o **frontend**.
+Recommended: start the **backend** first, then the **frontend** in another terminal.
 
-### Pré-requisitos
+### Prerequisites
 
-| Parte | Requisitos |
-|-------|------------|
-| Backend (Docker) | Docker e Docker Compose |
-| Backend (local) | Java 21, Maven, PostgreSQL 16 em `localhost:5432` |
-| Frontend | Node.js 18+ e npm |
+| Part | Requirements |
+|------|----------------|
+| Backend (Docker) | Docker and Docker Compose |
+| Backend (local) | Java 21, Maven, PostgreSQL 16 on `localhost:5432` |
+| Frontend | Node.js 18+ and npm |
 
 ### 1. Backend
 
-**Opção A — Docker Compose (recomendado)**
+**Option A — Docker Compose (recommended)**
 
-Na raiz do repositório:
+From the repository root:
 
 ```bash
 cp .env.example .env
@@ -41,29 +41,29 @@ docker compose up --build
 
 - API: <http://localhost:8080/api>
 - Swagger UI: <http://localhost:8080/swagger-ui.html>
-- PostgreSQL no host: porta `5433` (configurável via `POSTGRES_PORT` no `.env`)
+- PostgreSQL on the host: port `5433` (configurable via `POSTGRES_PORT` in `.env`)
 
-Usuário padrão após o seed:
+Default user after seed:
 
 | Username | Password   | Role  |
 |----------|------------|-------|
 | `admin`  | `admin123` | ADMIN |
 
-**Opção B — Maven local**
+**Option B — Local Maven**
 
-Com PostgreSQL acessível em `localhost:5432` (banco/usuário `termsheet`):
+With PostgreSQL reachable at `localhost:5432` (database/user `termsheet`):
 
 ```bash
 cd backend
 ./mvnw spring-boot:run
-# ou: mvn spring-boot:run
+# or: mvn spring-boot:run
 ```
 
-Variáveis opcionais: ver [`.env.example`](.env.example).
+Optional variables: see [`.env.example`](.env.example).
 
 ### 2. Frontend
 
-Com a API rodando em `http://localhost:8080`:
+With the API running at `http://localhost:8080`:
 
 ```bash
 cd frontend
@@ -72,37 +72,37 @@ npm start
 ```
 
 - App: <http://localhost:4200>
-- O dev server usa [`proxy.conf.json`](frontend/apps/intapp-suite/proxy.conf.json) para encaminhar `/api` → `http://localhost:8080` (cookies de refresh incluídos).
+- The dev server uses [`proxy.conf.json`](frontend/apps/intapp-suite/proxy.conf.json) to forward `/api` → `http://localhost:8080` (refresh cookies included).
 
-Outros comandos úteis:
+Other useful commands:
 
 ```bash
 cd frontend
-npm run build          # build de produção
-npm run lint           # ESLint em todos os projetos
-npm run lint:deps      # regras de dependência (dependency-cruiser)
-npm test               # testes unitários (Jest)
-npx nx test auth       # testes de uma lib específica
+npm run build          # production build
+npm run lint           # ESLint across all projects
+npm run lint:deps      # dependency rules (dependency-cruiser)
+npm test               # unit tests (Jest)
+npx nx test auth       # tests for a specific lib
 ```
 
-Credenciais de teste na UI: mesmo usuário `admin` / `admin123` (ou o configurado no seed da API).
+UI test credentials: same user `admin` / `admin123` (or whatever the API seed configures).
 
-## Documentação de decisões (frontend)
+## Architecture decisions (frontend)
 
-Decisões de arquitetura, auth, i18n, termsheet, util e testes estão na raiz. Índice: [`DECISOES.md`](DECISOES.md).
+Architecture, auth, i18n, termsheet, util, and testing decisions live at the repository root. Index: [`DECISOES.md`](DECISOES.md) (Portuguese).
 
-## Estrutura do projeto
+## Project layout
 
 ```text
 TermSheet/
-├── backend/              API Spring Boot (auth, deals, Flyway)
-├── frontend/             Monorepo Nx + Angular 17 (app intapp-suite)
+├── backend/              Spring Boot API (auth, deals, Flyway)
+├── frontend/             Nx monorepo + Angular 17 (intapp-suite app)
 │   ├── apps/intapp-suite/
 │   └── libs/             auth, i18n, termsheet, util
 ├── docker-compose.yml
 ├── .env.example
-├── challenge.md          Enunciado do desafio
-├── DECISOES*.md          Documentação de decisões do frontend
+├── challenge.md          Challenge brief
+├── DECISOES*.md          Frontend decision docs (Portuguese)
 └── README.md
 ```
 
@@ -118,50 +118,50 @@ TermSheet/
 - Angular 17, Nx 18, PrimeNG 17, Tailwind CSS
 - NgRx Signals, `@auth0/angular-jwt`, Jest
 
-## API (resumo)
+## API (summary)
 
-Base: `http://localhost:8080/api`
+Base URL: `http://localhost:8080/api`
 
 ### Auth
 
-| Method | Path       | Auth   | Descrição                          |
-|--------|------------|--------|------------------------------------|
-| POST   | `/auth/login`   | público | Access JWT no body + cookie refresh |
-| POST   | `/auth/refresh` | cookie  | Renova access token (rotação)       |
-| POST   | `/auth/logout`  | cookie  | Revoga refresh e limpa cookie       |
-| GET    | `/auth/me`      | bearer  | Usuário autenticado                 |
+| Method | Path            | Auth    | Description                              |
+|--------|-----------------|---------|------------------------------------------|
+| POST   | `/auth/login`   | public  | Access JWT in body + refresh cookie      |
+| POST   | `/auth/refresh` | cookie | Rotate refresh token                     |
+| POST   | `/auth/logout`  | cookie  | Revoke refresh and clear cookie          |
+| GET    | `/auth/me`      | bearer  | Authenticated user                       |
 
-O frontend envia credenciais (`withCredentials`) nas rotas `/api/auth/**` e usa interceptors para Bearer + refresh silencioso.
+The frontend sends credentials (`withCredentials`) on `/api/auth/**` routes and uses interceptors for Bearer tokens + silent refresh.
 
 ### Deals
 
-Requer `Authorization: Bearer <accessToken>`.
+Requires `Authorization: Bearer <accessToken>`.
 
-| Method | Path    | Descrição                                      |
-|--------|---------|------------------------------------------------|
-| GET    | `/deals` | Listagem paginada (`name`, `minPrice`, `maxPrice`, …) |
-| POST   | `/deals` | Criar deal (cap rate calculado no servidor)    |
-| GET    | `/deals/{id}` | Detalhe                                   |
-| PUT    | `/deals/{id}` | Atualizar                                 |
-| DELETE | `/deals/{id}` | Remover                                   |
+| Method | Path          | Description                                                |
+|--------|---------------|------------------------------------------------------------|
+| GET    | `/deals`      | Paginated list (`name`, `minPrice`, `maxPrice`, …)         |
+| POST   | `/deals`      | Create deal (cap rate computed on the server)              |
+| GET    | `/deals/{id}` | Get by id                                                  |
+| PUT    | `/deals/{id}` | Update                                                     |
+| DELETE | `/deals/{id}` | Delete                                                     |
 
-Exemplo com curl (após login):
+Example with curl (after login):
 
 ```bash
 curl -i -c cookies.txt -X POST http://localhost:8080/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"username":"admin","password":"admin123"}'
 
-TOKEN="<accessToken do JSON>"
+TOKEN="<accessToken from JSON>"
 curl -s "http://localhost:8080/api/deals?page=1&size=10" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-Mais detalhes de autenticação, refresh e variáveis de ambiente: seções abaixo permanecem válidas para operação da API.
+More details on authentication, refresh, and environment variables are in the sections below.
 
-## Autenticação e silent refresh (API)
+## Authentication and silent refresh (API)
 
-Login retorna access token no body e refresh em cookie HttpOnly:
+Login returns the access token in the response body and the refresh token in an HttpOnly cookie:
 
 ```bash
 curl -i -c cookies.txt -X POST http://localhost:8080/api/auth/login \
@@ -169,7 +169,7 @@ curl -i -c cookies.txt -X POST http://localhost:8080/api/auth/login \
      -d '{"username":"admin","password":"admin123"}'
 ```
 
-Refresh (cookie enviado automaticamente):
+Refresh (cookie sent automatically):
 
 ```bash
 curl -i -b cookies.txt -c cookies.txt -X POST http://localhost:8080/api/auth/refresh
@@ -181,27 +181,27 @@ Logout:
 curl -i -b cookies.txt -c cookies.txt -X POST http://localhost:8080/api/auth/logout
 ```
 
-## Configuração da API
+## API configuration
 
-| Variable                  | Default                                | Description                                       |
-|---------------------------|----------------------------------------|---------------------------------------------------|
-| `SPRING_DATASOURCE_URL`   | `jdbc:postgresql://localhost:5432/...` | JDBC URL                                          |
-| `SPRING_DATASOURCE_USERNAME` | `termsheet`                         | DB user                                           |
-| `SPRING_DATASOURCE_PASSWORD` | `termsheet`                         | DB password                                       |
-| `JWT_SECRET`              | (obrigatório em produção)              | Segredo HS256, ≥ 32 bytes UTF-8                   |
-| `JWT_ACCESS_EXPIRATION`   | `900000` (15 min)                      | TTL do access token (ms)                          |
-| `JWT_REFRESH_EXPIRATION`  | `604800000` (7 dias)                   | TTL do refresh token (ms)                         |
-| `COOKIE_SECURE`           | `false`                                | `true` em HTTPS                                   |
-| `COOKIE_SAMESITE`         | `Lax`                                  | `None` com `Secure=true` se cross-site            |
-| `CORS_ORIGINS`            | `http://localhost:4200`                | Origens permitidas (vírgula)                      |
+| Variable                     | Default                                | Description                                |
+|------------------------------|----------------------------------------|--------------------------------------------|
+| `SPRING_DATASOURCE_URL`      | `jdbc:postgresql://localhost:5432/...` | JDBC URL                                   |
+| `SPRING_DATASOURCE_USERNAME` | `termsheet`                            | DB user                                    |
+| `SPRING_DATASOURCE_PASSWORD` | `termsheet`                            | DB password                                |
+| `JWT_SECRET`                 | (required in production)               | HS256 secret, ≥ 32 UTF-8 bytes               |
+| `JWT_ACCESS_EXPIRATION`      | `900000` (15 min)                      | Access token TTL (ms)                      |
+| `JWT_REFRESH_EXPIRATION`     | `604800000` (7 days)                   | Refresh token TTL (ms)                     |
+| `COOKIE_SECURE`              | `false`                                | `true` over HTTPS                          |
+| `COOKIE_SAMESITE`            | `Lax`                                  | `None` with `Secure=true` if cross-site    |
+| `CORS_ORIGINS`               | `http://localhost:4200`                | Allowed origins (comma-separated)        |
 
-## Comandos Docker
+## Docker commands
 
 ```bash
 docker compose up --build     # build + start API + Postgres
-docker compose logs -f api    # logs da API
-docker compose down           # parar containers
-docker compose down -v        # parar e apagar volume do Postgres
+docker compose logs -f api    # tail API logs
+docker compose down           # stop containers
+docker compose down -v        # stop and wipe Postgres volume
 ```
 
 ## License
