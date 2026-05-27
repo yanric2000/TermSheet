@@ -32,8 +32,6 @@ describe('LoginComponent', () => {
       ],
     }).compileComponents();
 
-    // Fixa o locale para pt-BR e aguarda o load assíncrono do catálogo, para
-    // que as assertions abaixo independam do `navigator.language` do ambiente.
     localStorage.clear();
     Object.defineProperty(navigator, 'language', { value: 'pt-BR', configurable: true });
     const i18n = TestBed.inject(I18nService);
@@ -44,7 +42,7 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
   });
 
-  it('renderiza o form vazio', () => {
+  it('should render an empty form', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('input[id="username"]')).toBeTruthy();
     expect(compiled.querySelector('p-password')).toBeTruthy();
@@ -52,26 +50,22 @@ describe('LoginComponent', () => {
     expect(compiled.querySelector('p-message')).toBeNull();
   });
 
-  it('não chama login quando o form está inválido', () => {
+  it('should not call login when the form is invalid', () => {
     component['submit']();
     expect(authMock.login).not.toHaveBeenCalled();
   });
 
-  it('chama auth.login com payload correto quando o form é válido', () => {
+  it('should call auth.login with the correct payload when the form is valid', () => {
     component['form'].setValue({ username: 'demo', password: 'demo1234' });
     component['submit']();
     expect(authMock.login).toHaveBeenCalledWith({ username: 'demo', password: 'demo1234' });
   });
 
-  it('renderiza <p-message> com a mensagem do catálogo após submit inválido', fakeAsync(() => {
+  it('should render <p-message> with catalog message after invalid submit', fakeAsync(() => {
     component['submit']();
     tick();
     fixture.detectChanges();
 
-    // Após `markAllAsTouched()` no submit, a diretiva auto-aplicada inseriu
-    // um `<p-message>` como irmão de cada campo inválido (`username` e
-    // `password`). O texto vem do catálogo pt-BR via tabela built-in da
-    // diretiva (`required` → `requiredField`).
     const messages = Array.from(fixture.nativeElement.querySelectorAll('p-message')) as HTMLElement[];
     expect(messages.length).toBeGreaterThanOrEqual(2);
     expect(messages[0].getAttribute('ng-reflect-text')).toBe('Campo obrigatório');

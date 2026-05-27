@@ -59,14 +59,14 @@ describe('AuthService', () => {
     service = TestBed.inject(AuthService);
   });
 
-  it('inicia sem usuário autenticado', () => {
+  it('should start without an authenticated user', () => {
     expect(service.isAuthenticated()).toBe(false);
     expect(service.accessToken()).toBeNull();
     expect(service.user()).toBeNull();
   });
 
   describe('login', () => {
-    it('popula state e navega para a rota padrão configurada em sucesso', done => {
+    it('should populate state and navigate to the configured default route on success', done => {
       apiMock.login.mockReturnValue(of(fakeLoginResponse));
 
       service.login({ username: 'demo', password: 'demo1234' }).subscribe(() => {
@@ -78,7 +78,7 @@ describe('AuthService', () => {
       });
     });
 
-    it('propaga o erro e mantém state limpo quando o login falha', done => {
+    it('should propagate the error and keep state clean when login fails', done => {
       const err = new HttpErrorResponse({
         error: { message: 'Bad credentials' },
         status: 401,
@@ -88,9 +88,6 @@ describe('AuthService', () => {
 
       service.login({ username: 'x', password: 'y' }).subscribe({
         error: received => {
-          // Toast/mensagem é responsabilidade do `apiErrorToastInterceptor`.
-          // Aqui validamos só os side effects que o service ainda mantém:
-          // erro propaga, token continua nulo e loading volta para false.
           expect(received).toBe(err);
           expect(service.accessToken()).toBeNull();
           expect(service.loading()).toBe(false);
@@ -99,7 +96,7 @@ describe('AuthService', () => {
       });
     });
 
-    it('seta loading=true durante a chamada e false ao final', done => {
+    it('should set loading=true during the call and false when finished', done => {
       apiMock.login.mockReturnValue(of(fakeLoginResponse));
       expect(service.loading()).toBe(false);
       service.login({ username: 'demo', password: 'demo1234' }).subscribe(() => {
@@ -110,7 +107,7 @@ describe('AuthService', () => {
   });
 
   describe('bootstrap', () => {
-    it('recupera sessão chamando refresh + me em sucesso', done => {
+    it('should restore session by calling refresh + me on success', done => {
       apiMock.refresh.mockReturnValue(of({ accessToken: 'new.token', tokenType: 'Bearer', expiresIn: 900 }));
       apiMock.me.mockReturnValue(of(fakeUser));
 
@@ -121,7 +118,7 @@ describe('AuthService', () => {
       });
     });
 
-    it('mantém state vazio silenciosamente em 401', done => {
+    it('should keep state empty silently on 401', done => {
       const err = new HttpErrorResponse({ error: null, status: 401 });
       apiMock.refresh.mockReturnValue(throwError(() => err));
 
@@ -134,7 +131,7 @@ describe('AuthService', () => {
   });
 
   describe('logout', () => {
-    it('limpa state e navega para /login mesmo se o POST falhar', done => {
+    it('should clear state and navigate to /login even when POST fails', done => {
       apiMock.logout.mockReturnValue(throwError(() => new HttpErrorResponse({ error: null, status: 500 })));
 
       service.logout().subscribe({
@@ -147,7 +144,7 @@ describe('AuthService', () => {
       });
     });
 
-    it('limpa state e navega para /login em sucesso', done => {
+    it('should clear state and navigate to /login on success', done => {
       apiMock.logout.mockReturnValue(of(void 0));
 
       service.logout().subscribe({
@@ -162,11 +159,11 @@ describe('AuthService', () => {
   });
 
   describe('isAuthenticated', () => {
-    it('false quando não há token', () => {
+    it('should return false when there is no token', () => {
       expect(service.isAuthenticated()).toBe(false);
     });
 
-    it('true quando há token não-expirado', done => {
+    it('should return true when there is a non-expired token', done => {
       apiMock.login.mockReturnValue(of(fakeLoginResponse));
       (jwtMock.isTokenExpired as jest.Mock).mockReturnValue(false);
       service.login({ username: 'demo', password: 'demo1234' }).subscribe(() => {
@@ -175,7 +172,7 @@ describe('AuthService', () => {
       });
     });
 
-    it('false quando o token está expirado', done => {
+    it('should return false when the token is expired', done => {
       apiMock.login.mockReturnValue(of(fakeLoginResponse));
       (jwtMock.isTokenExpired as jest.Mock).mockReturnValue(true);
       service.login({ username: 'demo', password: 'demo1234' }).subscribe(() => {

@@ -12,7 +12,7 @@ describe('BrowserStorageService', () => {
   });
 
   describe('get/set round-trip', () => {
-    it('preserva objetos via JSON.parse/stringify', () => {
+    it('should preserve objects via JSON.parse/stringify', () => {
       const value = { id: 1, name: 'Demo', nested: { active: true } };
 
       service.set('user', value);
@@ -20,49 +20,47 @@ describe('BrowserStorageService', () => {
       expect(service.get<typeof value>('user')).toEqual(value);
     });
 
-    it('preserva strings', () => {
+    it('should preserve strings', () => {
       service.set('locale', 'pt-BR');
       expect(service.get<string>('locale')).toBe('pt-BR');
     });
 
-    it('preserva números', () => {
+    it('should preserve numbers', () => {
       service.set('count', 42);
       expect(service.get<number>('count')).toBe(42);
     });
 
-    it('preserva booleanos', () => {
+    it('should preserve booleans', () => {
       service.set('enabled', true);
       expect(service.get<boolean>('enabled')).toBe(true);
     });
 
-    it('preserva arrays', () => {
+    it('should preserve arrays', () => {
       service.set('items', [1, 2, 3]);
       expect(service.get<number[]>('items')).toEqual([1, 2, 3]);
     });
 
-    it('sempre serializa via JSON.stringify (string vai com aspas)', () => {
+    it('should always serialize via JSON.stringify (string stored with quotes)', () => {
       service.set('locale', 'pt-BR');
-      // Conferência defensiva: o teste documenta o contrato de serialização.
-      // Quem ler direto do localStorage (sem passar pelo service) precisa
-      // saber que vai receber a forma serializada.
+
       expect(localStorage.getItem('locale')).toBe(JSON.stringify('pt-BR'));
     });
   });
 
-  describe('get em chave ausente', () => {
-    it('retorna null quando a chave não existe', () => {
+  describe('get missing key', () => {
+    it('should return null when the key does not exist', () => {
       expect(service.get('missing')).toBeNull();
     });
   });
 
   describe('remove', () => {
-    it('apaga a chave de localStorage', () => {
+    it('should delete the key from localStorage', () => {
       service.set('temp', 'value');
       service.remove('temp');
       expect(service.get('temp')).toBeNull();
     });
 
-    it('é no-op quando a chave não existe', () => {
+    it('should be a no-op when the key does not exist', () => {
       expect(() => service.remove('never-set')).not.toThrow();
     });
   });

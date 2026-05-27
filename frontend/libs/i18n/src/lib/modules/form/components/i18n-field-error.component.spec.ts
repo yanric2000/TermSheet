@@ -13,12 +13,12 @@ describe('I18nFieldErrorComponent', () => {
     fixture = TestBed.createComponent(I18nFieldErrorComponent);
   });
 
-  it('não renderiza <p-message> quando `message` é null (estado inicial)', () => {
+  it('should not render <p-message> when message is null (initial state)', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('p-message')).toBeNull();
   });
 
-  it('renderiza <p-message> com severity=error e o texto passado', () => {
+  it('should render <p-message> with severity=error and passed text', () => {
     fixture.componentRef.setInput('message', 'Campo obrigatório');
     fixture.detectChanges();
 
@@ -28,8 +28,8 @@ describe('I18nFieldErrorComponent', () => {
     expect(message.getAttribute('ng-reflect-text')).toBe('Campo obrigatório');
   });
 
-  it('remove o <p-message> quando `message` volta para null', () => {
-    fixture.componentRef.setInput('message', 'erro');
+  it('should remove <p-message> when message becomes null', () => {
+    fixture.componentRef.setInput('message', 'error');
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('p-message')).not.toBeNull();
 

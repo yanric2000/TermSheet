@@ -7,25 +7,6 @@ import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 
-/**
- * Tela de login da aplicação.
- *
- * - Standalone, ChangeDetection OnPush.
- * - ReactiveForms com validações espelhando `LoginRequest.java` (min 4, max 100).
- * - PrimeNG: `p-card` centralizado, `p-inputText`, `p-password`, `p-button`.
- * - Mensagens de erro renderizadas automaticamente pela
- *   `I18nFieldErrorDirective` (auto-aplicada via seletor `[formControlName]`).
- *   Defaults built-in cobrem `required`/`minlength`/`maxlength` — não precisa
- *   prover resolvers custom para este form.
- * - Toast de falha de autenticação é responsabilidade do
- *   `apiErrorToastInterceptor` (global), não do componente.
- * - Submit via Enter (default do `<form>`), `autofocus` no primeiro campo.
- *
- * `labels` é um objeto plain readonly: as traduções não mudam em runtime na
- * UI atual (não há seletor de idioma), então não compensa pagar o custo de
- * um `computed`. Se um dia surgir um toggle de locale em tempo real, esse
- * objeto pode voltar a ser `computed(() => ...)` sem mexer no template.
- */
 @Component({
   selector: 'lib-login',
   standalone: true,
@@ -57,9 +38,7 @@ export class LoginComponent {
       this.form.markAllAsTouched();
       return;
     }
-    // O subscribe é necessário: `login()` devolve um cold observable. Erros
-    // são tratados globalmente pelo `apiErrorToastInterceptor`, então só
-    // precisamos engolir o `error` para que o RxJS não logue "unhandled".
-    this.auth.login(this.form.getRawValue()).subscribe({ error: () => void 0 });
+
+    this.auth.login(this.form.getRawValue()).subscribe();
   }
 }

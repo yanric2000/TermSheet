@@ -6,22 +6,6 @@ import { Observable } from 'rxjs';
 
 import { IAuthApiPort } from './auth-api.port';
 
-/**
- * Adapter HTTP que implementa `IAuthApiPort` falando com o backend Spring.
- *
- * O `provideAuth()` (raiz da lib) amarra `AUTH_API` → `AuthApiService`. O
- * `AuthService` só conhece o port, nunca esta classe.
- *
- * Decisões importantes:
- *  - `withCredentials: true` em login/refresh/logout — necessário para que o
- *    cookie HttpOnly `refresh_token` seja recebido (login) ou enviado
- *    (refresh/logout).
- *  - `me` não precisa de `withCredentials` (Bearer já é o suficiente). Mantemos
- *    o default. O `JwtInterceptor` do `@auth0/angular-jwt` anexa o Bearer
- *    automaticamente nas rotas permitidas.
- *  - SEM `providedIn: 'root'`: a única forma de obter uma instância é via o
- *    token `AUTH_API`, fechando a porta para imports diretos via classe.
- */
 @Injectable()
 export class AuthApiService implements IAuthApiPort {
   private http = inject(HttpClient);

@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'termsheet',
   preset: '../../jest.preset.js',

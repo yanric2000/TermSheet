@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'intapp-suite',
   preset: '../../jest.preset.js',

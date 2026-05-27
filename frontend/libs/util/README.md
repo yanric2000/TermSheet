@@ -1,7 +1,13 @@
-# util
+# @intapp/util
 
-This library was generated with [Nx](https://nx.dev).
+Utilitários compartilhados (storage, HTTP, signals, helpers Jest).
 
-## Running unit tests
+Documentação de decisões: [DECISOES-UTIL.md](../../../DECISOES-UTIL.md) (raiz do repositório).
 
-Run `nx test util` to execute the unit tests.
+## Comandos
+
+```bash
+cd frontend
+npx nx test util
+npx nx run util:lint
+```

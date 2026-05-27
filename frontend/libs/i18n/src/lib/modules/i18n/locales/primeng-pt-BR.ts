@@ -1,17 +1,5 @@
 import type { Translation } from 'primeng/api';
 
-/**
- * Mapa de tradução do PrimeNG para pt-BR.
- *
- * Arquivo separado dos demais para que o code-splitting do bundler emita
- * um chunk dedicado por idioma — usuários em pt-BR não baixam strings
- * en-US/es-ES no boot.
- *
- * Cobre o essencial que aparece nas features atuais (campo de senha, filtros
- * de tabela, calendário). Conforme novos componentes do PrimeNG forem usados
- * (FileUpload, Paginator com aria, etc.), basta acrescentar as chaves
- * correspondentes — todas são opcionais na interface `Translation`.
- */
 export const PRIMENG_PT_BR: Translation = {
   accept: 'Sim',
   reject: 'Não',

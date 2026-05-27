@@ -21,7 +21,7 @@ describe('DealsApiService', () => {
     httpMock.verify();
   });
 
-  it('create envia POST /api/deals e mapeia a resposta para o domínio', () => {
+  it('should POST /api/deals on create and map response to domain', () => {
     const payload = {
       name: 'Office Tower',
       purchasePrice: 1_000_000,

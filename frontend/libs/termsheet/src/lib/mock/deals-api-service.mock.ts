@@ -1,7 +1,7 @@
 import type { IDeal } from '@intapp/termsheet/deal/models/deal.model';
 import { DealsApiService } from '@intapp/termsheet/deal/services';
 import type { IPagedResult } from '@intapp/util';
-import { criarObjetoEspiaoJest } from '@intapp/util/jest';
+import { createJestSpyObject } from '@intapp/util/jest';
 import { of } from 'rxjs';
 
 const pagedResultFactory = (overrides?: Partial<IPagedResult<IDeal>>) => ({
@@ -14,7 +14,7 @@ const pagedResultFactory = (overrides?: Partial<IPagedResult<IDeal>>) => ({
 });
 
 export const dealsApiServiceMockFactory = () => {
-  const mock = criarObjetoEspiaoJest<DealsApiService>(['load']);
+  const mock = createJestSpyObject<DealsApiService>(['load']);
   mock.load.mockImplementation(() => of(pagedResultFactory()));
   return mock;
 };

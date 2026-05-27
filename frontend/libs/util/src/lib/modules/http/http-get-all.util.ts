@@ -51,10 +51,6 @@ export class HttpGetAllRequest<T extends { id: string }, Filtros extends GetAllR
     }
   }
 
-  /**
-   * Método responsável por refazer a busca atual
-   * @return Retorno assíncrono dos registros encontrados
-   */
   refazerBuscaAtual() {
     const paginaAtual = this.filtros.page + 0;
     const tamanhoPaginaAtual = this.filtros.pageSize + 0;

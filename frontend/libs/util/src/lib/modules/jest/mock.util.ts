@@ -1,16 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Provider } from '@angular/core';
-import type { ObjetoEspiaoJest } from '@intapp/util/models';
+import type { JestSpyObject } from '@intapp/util/models';
 import { of } from 'rxjs';
 
-import { criarObjetoEspiaoJest } from './jest.util';
+import { createJestSpyObject } from './jest.util';
 
-/**
- * Mocks reutilizáveis e agnósticos de domínio devem ser centralizados aqui.
- */
-
-export const changeDetectorRefFactory = (): ObjetoEspiaoJest<ChangeDetectorRef> =>
-  criarObjetoEspiaoJest<ChangeDetectorRef>(['checkNoChanges', 'detach', 'detectChanges', 'markForCheck', 'reattach']);
+export const changeDetectorRefFactory = (): JestSpyObject<ChangeDetectorRef> =>
+  createJestSpyObject<ChangeDetectorRef>(['checkNoChanges', 'detach', 'detectChanges', 'markForCheck', 'reattach']);
 
 export const changeDetectorRefProviderFactory = () =>
   ({
@@ -18,8 +14,8 @@ export const changeDetectorRefProviderFactory = () =>
     useValue: changeDetectorRefFactory(),
   }) satisfies Provider;
 
-export const httpClientFactory = (): ObjetoEspiaoJest<HttpClient> => {
-  const spy = criarObjetoEspiaoJest<HttpClient>(['get', 'post', 'put', 'delete', 'patch']);
+export const httpClientFactory = (): JestSpyObject<HttpClient> => {
+  const spy = createJestSpyObject<HttpClient>(['get', 'post', 'put', 'delete', 'patch']);
   spy.post.mockReturnValue(of(null));
   return spy;
 };

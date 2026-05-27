@@ -1,6 +1,5 @@
 import type { Translation } from 'primeng/api';
 
-/** Mapa de tradução do PrimeNG para en-US. Carregado lazy via `PRIMENG_LOADERS`. */
 export const PRIMENG_EN_US: Translation = {
   accept: 'Yes',
   reject: 'No',

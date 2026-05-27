@@ -36,12 +36,12 @@ describe('DealCreateDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('não chama createDeal quando o formulário é inválido', () => {
+  it('should not call createDeal when the form is invalid', () => {
     fixture.componentInstance['submit']();
     expect(storeMock.createDeal).not.toHaveBeenCalled();
   });
 
-  it('chama createDeal e emite created quando o formulário é válido', () => {
+  it('should call createDeal and emit created when the form is valid', () => {
     const createdSpy = jest.fn();
     fixture.componentInstance.created.subscribe(createdSpy);
 
@@ -59,11 +59,12 @@ describe('DealCreateDialogComponent', () => {
       purchasePrice: 500_000,
       address: '1st Ave',
       noi: 25_000,
+      description: '',
     });
     expect(createdSpy).toHaveBeenCalled();
   });
 
-  it('mantém o dialog aberto quando createDeal falha', () => {
+  it('should keep the dialog open when createDeal fails', () => {
     storeMock.createDeal.mockReturnValue(throwError(() => new Error('fail')));
 
     fixture.componentInstance['form'].patchValue({

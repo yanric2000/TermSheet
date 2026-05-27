@@ -18,7 +18,6 @@ export interface IDealGetAPI {
   updatedAt?: string;
 }
 
-/** Envelope paginado do Spring Data (campos relevantes apenas). */
 export interface IDealPaginationAPI {
   content: IDealGetAPI[];
   totalElements: number;

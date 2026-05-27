@@ -3,19 +3,8 @@ import { ResolveFn, Routes } from '@angular/router';
 import { I18nService } from '@intapp/i18n';
 import { provideDeals } from '@intapp/termsheet/deal/providers';
 
-/**
- * Resolver de título funcional. `pageTitle()` compõe `${productName} · ${section}`
- * — centraliza a regra de branding em um lugar só.
- */
-const dealsTitle: ResolveFn<string> = () => inject(I18nService).pageTitle('pageTitleDeals');
+const dealsTitle: ResolveFn<string> = () => inject(I18nService).pageTitle('dealsTitle');
 
-/**
- * Rotas do subdomínio `deals`.
- *
- * Encapsula as páginas deste contexto (hoje apenas a listagem). É consumida
- * apenas pelo orquestrador `termsheet.routes.ts` via `loadChildren`, mantendo
- * o limite do subdomínio bem definido — NÃO é exportada via barrel público.
- */
 export const dealsRoutes: Routes = [
   {
     path: '',

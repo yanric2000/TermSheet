@@ -3,8 +3,8 @@ import type { IDeal } from '@intapp/termsheet/deal/models/deal.model';
 import type { DealsFilterValues } from '@intapp/termsheet/deal/models/deals-filters.model';
 import { DealsStore } from '@intapp/termsheet/deal/stores';
 import { paginacaoPadrao } from '@intapp/util';
-import { criarObjetoEspiaoJest } from '@intapp/util/jest';
-import type { ObjetoEspiaoJest } from '@intapp/util/models';
+import { createJestSpyObject } from '@intapp/util/jest';
+import type { JestSpyObject } from '@intapp/util/models';
 import { of } from 'rxjs';
 
 type DealsStoreInstance = InstanceType<typeof DealsStore>;
@@ -19,8 +19,8 @@ const dealFactory = (overrides?: Partial<IDeal>): IDeal => ({
   ...overrides,
 });
 
-export const dealsStoreMockFactory = (): ObjetoEspiaoJest<DealsStoreInstance> => {
-  const mock = criarObjetoEspiaoJest<DealsStoreInstance>(
+export const dealsStoreMockFactory = (): JestSpyObject<DealsStoreInstance> => {
+  const mock = createJestSpyObject<DealsStoreInstance>(
     ['reload', 'applyFilters', 'setPage', 'setPageSize', 'createDeal'],
     {
       entities: signal<IDeal[]>([]),

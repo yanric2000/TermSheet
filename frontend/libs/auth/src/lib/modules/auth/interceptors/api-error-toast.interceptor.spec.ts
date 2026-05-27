@@ -26,7 +26,7 @@ describe('apiErrorToastInterceptor', () => {
     httpMock = TestBed.inject(HttpTestingController);
     messages = TestBed.inject(MessageService);
     i18n = TestBed.inject(I18nService);
-    // Locale determinístico independente do navegador do CI.
+
     await i18n.setLocale('pt-BR');
     addSpy = jest.spyOn(messages, 'add');
   });
@@ -35,8 +35,8 @@ describe('apiErrorToastInterceptor', () => {
     httpMock.verify();
   });
 
-  describe('sucesso', () => {
-    it('não dispara toast quando a request completa sem erro', done => {
+  describe('success', () => {
+    it('should not show a toast when the request completes without error', done => {
       http.get('/api/deals').subscribe(() => {
         expect(addSpy).not.toHaveBeenCalled();
         done();
@@ -45,8 +45,8 @@ describe('apiErrorToastInterceptor', () => {
     });
   });
 
-  describe('URLs silenciadas', () => {
-    it('não dispara toast em /api/auth/refresh', done => {
+  describe('silenced URLs', () => {
+    it('should not show a toast for /api/auth/refresh', done => {
       http.post('/api/auth/refresh', null).subscribe({
         error: () => {
           expect(addSpy).not.toHaveBeenCalled();
@@ -56,7 +56,7 @@ describe('apiErrorToastInterceptor', () => {
       httpMock.expectOne('/api/auth/refresh').flush(null, { status: 401, statusText: 'Unauthorized' });
     });
 
-    it('não dispara toast em /api/auth/logout', done => {
+    it('should not show a toast for /api/auth/logout', done => {
       http.post('/api/auth/logout', null).subscribe({
         error: () => {
           expect(addSpy).not.toHaveBeenCalled();
@@ -67,8 +67,8 @@ describe('apiErrorToastInterceptor', () => {
     });
   });
 
-  describe('extração de mensagem', () => {
-    it('usa err.error.message quando o backend devolve ApiError canônico', done => {
+  describe('message extraction', () => {
+    it('should use err.error.message when the backend returns canonical ApiError', done => {
       http.post('/api/auth/login', {}).subscribe({
         error: () => {
           expect(addSpy).toHaveBeenCalledWith(
@@ -82,7 +82,7 @@ describe('apiErrorToastInterceptor', () => {
         .flush({ message: 'Bad credentials' }, { status: 401, statusText: 'Unauthorized' });
     });
 
-    it('usa err.error string quando o backend devolve texto puro', done => {
+    it('should use err.error string when the backend returns plain text', done => {
       http.get('/api/deals').subscribe({
         error: () => {
           expect(addSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: 'plain text error' }));
@@ -92,7 +92,7 @@ describe('apiErrorToastInterceptor', () => {
       httpMock.expectOne('/api/deals').flush('plain text error', { status: 500, statusText: 'Server Error' });
     });
 
-    it('fallback i18n apiErrorNoNetwork em status 0 sem body', done => {
+    it('should fall back to i18n apiErrorNoNetwork on status 0 without body', done => {
       http.get('/api/deals').subscribe({
         error: () => {
           expect(addSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: i18n.t('apiErrorNoNetwork') }));
@@ -102,7 +102,7 @@ describe('apiErrorToastInterceptor', () => {
       httpMock.expectOne('/api/deals').error(new ProgressEvent('error'), { status: 0, statusText: '' });
     });
 
-    it('fallback i18n apiErrorUnauthorized em 401 sem body', done => {
+    it('should fall back to i18n apiErrorUnauthorized on 401 without body', done => {
       http.get('/api/deals').subscribe({
         error: () => {
           expect(addSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: i18n.t('apiErrorUnauthorized') }));
@@ -112,7 +112,7 @@ describe('apiErrorToastInterceptor', () => {
       httpMock.expectOne('/api/deals').flush(null, { status: 401, statusText: 'Unauthorized' });
     });
 
-    it('usa err.statusText em 500 sem body', done => {
+    it('should use err.statusText on 500 without body', done => {
       http.get('/api/deals').subscribe({
         error: () => {
           expect(addSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: 'Internal Server Error' }));
@@ -122,7 +122,7 @@ describe('apiErrorToastInterceptor', () => {
       httpMock.expectOne('/api/deals').flush(null, { status: 500, statusText: 'Internal Server Error' });
     });
 
-    it('usa o título genérico apiErrorToastTitle em todo toast disparado', done => {
+    it('should use generic apiErrorToastTitle summary on every toast shown', done => {
       http.get('/api/deals').subscribe({
         error: () => {
           expect(addSpy).toHaveBeenCalledWith(expect.objectContaining({ summary: i18n.t('apiErrorToastTitle') }));
@@ -133,8 +133,8 @@ describe('apiErrorToastInterceptor', () => {
     });
   });
 
-  describe('propagação do erro', () => {
-    it('continua propagando o HttpErrorResponse para o caller', done => {
+  describe('error propagation', () => {
+    it('should continue propagating HttpErrorResponse to the caller', done => {
       http.get('/api/deals').subscribe({
         error: err => {
           expect(err.status).toBe(500);

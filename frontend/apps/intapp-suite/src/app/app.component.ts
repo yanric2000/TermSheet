@@ -2,14 +2,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
 
-/**
- * Root da aplicação.
- *
- * Mantém o `<p-toast>` global no topo da árvore para que qualquer feature
- * (e o `apiErrorToastInterceptor`) consiga renderizar notificações sem
- * precisar declarar `ToastModule` em cada componente. `MessageService` é
- * registrado em `app.config.ts` — basta o `<p-toast>` estar montado uma vez.
- */
 @Component({
   selector: 'app-root',
   standalone: true,

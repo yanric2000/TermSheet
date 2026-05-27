@@ -1,8 +1,3 @@
-/**
- * API pública da `libs/auth`.
- * Apenas o que precisa ser consumido por outras libs/apps deve ser exportado aqui.
- */
-
 export { provideAuth } from './lib/auth.providers';
 export { authRoutes } from './lib/features/auth.routes';
 export { authGuard, publicOnlyGuard } from './lib/modules/auth/guards/auth.guard';

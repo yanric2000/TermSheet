@@ -40,7 +40,6 @@ export function withPagedEntities<L extends IPagedEntitiesLoader<unknown, Record
 
       const fetch = rxMethod<{ pagination: GetAllRequiredParamsType; filters: TFilters }>(
         pipe(
-          tap(algo => console.log('fetch algo -> ', algo)),
           tap(() => patchState(store, { loading: true })),
           debounceTime(300),
           switchMap(({ pagination, filters }) =>
@@ -54,7 +53,7 @@ export function withPagedEntities<L extends IPagedEntitiesLoader<unknown, Record
                     loading: false,
                   }),
                 error: err => {
-                  console.error('Falha ao carregar entidades paginadas', err);
+                  console.error('Failed to load paged entities', err);
                   patchState(store, { loading: false });
                 },
               }),

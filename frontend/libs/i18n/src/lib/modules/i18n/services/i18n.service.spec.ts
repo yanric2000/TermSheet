@@ -26,9 +26,7 @@ describe('I18nService', () => {
   }
 
   describe('initial locale', () => {
-    it('respeita locale persistido em localStorage acima do idioma do navegador', async () => {
-      // O service grava via JSON.stringify; o setup direto precisa imitar a
-      // serialização para o read não cair no caminho "valor corrompido".
+    it('should prefer locale persisted in localStorage over browser language', async () => {
       localStorage.setItem(LOCALE_STORAGE_KEY, JSON.stringify('es-ES'));
       Object.defineProperty(navigator, 'language', { value: 'en-US', configurable: true });
 
@@ -38,7 +36,7 @@ describe('I18nService', () => {
       expect(service.catalog()).toBe(esES);
     });
 
-    it('usa idioma do navegador quando não há valor persistido', async () => {
+    it('should use browser language when nothing is persisted', async () => {
       Object.defineProperty(navigator, 'language', { value: 'en-US', configurable: true });
 
       const service = await createAndBootstrap();
@@ -47,7 +45,7 @@ describe('I18nService', () => {
       expect(service.catalog()).toBe(enUS);
     });
 
-    it('faz prefix-match para variantes regionais não suportadas (ex.: pt-PT → pt-BR)', async () => {
+    it('should prefix-match unsupported regional variants (e.g. pt-PT → pt-BR)', async () => {
       Object.defineProperty(navigator, 'language', { value: 'pt-PT', configurable: true });
 
       const service = await createAndBootstrap();
@@ -55,7 +53,7 @@ describe('I18nService', () => {
       expect(service.locale()).toBe('pt-BR');
     });
 
-    it('cai no DEFAULT_LOCALE quando navegador reporta idioma desconhecido', async () => {
+    it('should fall back to DEFAULT_LOCALE when browser reports unknown language', async () => {
       Object.defineProperty(navigator, 'language', { value: 'ja-JP', configurable: true });
 
       const service = await createAndBootstrap();
@@ -64,7 +62,7 @@ describe('I18nService', () => {
       expect(service.catalog()).toBe(ptBR);
     });
 
-    it('ignora valor inválido no localStorage e usa idioma do navegador', async () => {
+    it('should ignore invalid localStorage value and use browser language', async () => {
       localStorage.setItem(LOCALE_STORAGE_KEY, JSON.stringify('klingon'));
       Object.defineProperty(navigator, 'language', { value: 'en-US', configurable: true });
 
@@ -73,38 +71,35 @@ describe('I18nService', () => {
       expect(service.locale()).toBe('en-US');
     });
 
-    it('catalog() é null antes de bootstrap() resolver', () => {
+    it('should have catalog() null before bootstrap() resolves', () => {
       const service = create();
       expect(service.catalog()).toBeNull();
     });
   });
 
   describe('setLocale', () => {
-    it('atualiza locale, catalog() e persiste em localStorage', async () => {
+    it('should update locale, catalog() and persist to localStorage', async () => {
       const service = await createAndBootstrap();
 
       await service.setLocale('en-US');
 
       expect(service.locale()).toBe('en-US');
       expect(service.catalog()).toBe(enUS);
-      // O service serializa via JSON.stringify para passar pelo BrowserStorageService.
+
       expect(localStorage.getItem(LOCALE_STORAGE_KEY)).toBe(JSON.stringify('en-US'));
     });
 
-    it('mantém locale atual quando recebe valor não suportado', async () => {
+    it('should keep current locale when given unsupported value', async () => {
       const service = await createAndBootstrap();
       const initial = service.locale();
 
-      // Cast explícito porque o tipo público proíbe valores inválidos; o teste
-      // simula um cenário em que o valor chega por uma rota imprevista (URL,
-      // payload de API antiga, etc.) e o service precisa ignorar com segurança.
       await service.setLocale('invalid' as never);
 
       expect(service.locale()).toBe(initial);
       expect(localStorage.getItem(LOCALE_STORAGE_KEY)).toBeNull();
     });
 
-    it('reflete a troca de locale em t(chave)', async () => {
+    it('should reflect locale change in t(key)', async () => {
       const service = await createAndBootstrap();
       expect(service.t('loginSubmit')).toBe(ptBR['loginSubmit']);
 
@@ -113,7 +108,7 @@ describe('I18nService', () => {
       expect(service.t('loginSubmit')).toBe(esES['loginSubmit']);
     });
 
-    it('atualiza o atributo lang do <html> para refletir o locale ativo', async () => {
+    it('should update html lang attribute to match active locale', async () => {
       const service = await createAndBootstrap();
 
       await service.setLocale('en-US');
@@ -122,8 +117,8 @@ describe('I18nService', () => {
     });
   });
 
-  describe('t() — placeholders', () => {
-    it('substitui {0} pelo argumento numérico', async () => {
+  describe('t() placeholders', () => {
+    it('should replace {0} with numeric argument', async () => {
       const service = await createAndBootstrap();
 
       const message = service.t('minLength', 8);
@@ -132,7 +127,7 @@ describe('I18nService', () => {
       expect(message).toContain('8');
     });
 
-    it('substitui {0} pelo argumento textual', async () => {
+    it('should replace {0} with string argument', async () => {
       const service = await createAndBootstrap();
 
       const message = service.t('dealsGreeting', 'Yan');
@@ -140,7 +135,7 @@ describe('I18nService', () => {
       expect(message).toBe('Olá, Yan');
     });
 
-    it('interpolação funciona consistentemente em todos os locales', async () => {
+    it('should interpolate consistently across all locales', async () => {
       const service = await createAndBootstrap();
 
       await service.setLocale('en-US');
@@ -150,28 +145,25 @@ describe('I18nService', () => {
       expect(service.t('dealsGreeting', 'Yan')).toBe('Hola, Yan');
     });
 
-    it('resolve string estática sem argumentos', async () => {
+    it('should resolve static string without arguments', async () => {
       const service = await createAndBootstrap();
       expect(service.t('loginSubtitle')).toBe(ptBR['loginSubtitle']);
     });
 
-    it('retorna string vazia antes do catálogo carregar', () => {
-      // Defensivo: cenário não acontece em runtime real (APP_INITIALIZER
-      // aguarda bootstrap), mas testamos para garantir que não dispara
-      // exception se alguém criar o service manualmente.
+    it('should return empty string before catalog loads', () => {
       const service = create();
       expect(service.t('loginSubmit')).toBe('');
     });
   });
 
   describe('pageTitle()', () => {
-    it('compõe productName + section corretamente', async () => {
+    it('should compose productName + section correctly', async () => {
       const service = await createAndBootstrap();
 
       expect(service.pageTitle('pageTitleLogin')).toBe('TermSheet · Login');
     });
 
-    it('compõe usando o branding do locale ativo', async () => {
+    it('should compose using active locale branding', async () => {
       const service = await createAndBootstrap();
 
       await service.setLocale('en-US');

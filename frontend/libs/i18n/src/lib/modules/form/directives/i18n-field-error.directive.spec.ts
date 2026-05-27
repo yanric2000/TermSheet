@@ -6,15 +6,6 @@ import { I18nService } from '@intapp/i18n/services';
 
 import { I18nFieldErrorDirective } from './i18n-field-error.directive';
 
-/**
- * `[formControl]` direto exige uma instância de `AbstractControl` para o
- * input, então centralizamos a montagem do form em um único componente
- * host e os specs apenas configuram validators diferentes via `setupForm()`.
- *
- * Mantemos a marcação mínima — só o input com `formControlName` + a
- * diretiva auto-aplicada via seletor. O `<p-message>` filho é inserido
- * automaticamente como irmão do `<input>`.
- */
 @Component({
   standalone: true,
   imports: [ReactiveFormsModule, I18nFieldErrorDirective],
@@ -30,9 +21,6 @@ class HostComponent {
 }
 
 async function bootstrapI18n(): Promise<void> {
-  // Força pt-BR para alinhar com as strings esperadas (`Campo obrigatório`,
-  // `Mínimo de N caracteres`). Sem isso, o `I18nService` cai no
-  // `navigator.language` do jsdom, que costuma reportar `en-US`.
   localStorage.clear();
   Object.defineProperty(navigator, 'language', { value: 'pt-BR', configurable: true });
   const i18n = TestBed.inject(I18nService);
@@ -42,10 +30,7 @@ async function bootstrapI18n(): Promise<void> {
 function buildFixture(): ComponentFixture<HostComponent> {
   const fixture = TestBed.createComponent(HostComponent);
   fixture.detectChanges();
-  // A diretiva agenda `setup()` em microtask para esperar o
-  // `FormControlName` popular `NgControl.control`. Esvaziamos a fila
-  // explicitamente para que o `<p-message>` esteja disponível imediatamente
-  // após o `detectChanges()`.
+
   return fixture;
 }
 
@@ -59,7 +44,7 @@ function getMessage(fixture: ComponentFixture<HostComponent>): HTMLElement | nul
 
 function getControl(fixture: ComponentFixture<HostComponent>): AbstractControl {
   const control = fixture.componentInstance.form.get('field');
-  if (!control) throw new Error('control `field` ausente');
+  if (!control) throw new Error('missing control `field`');
   return control;
 }
 
@@ -72,7 +57,7 @@ describe('I18nFieldErrorDirective', () => {
     await bootstrapI18n();
   });
 
-  it('não renderiza <p-message> antes do controle ser tocado', fakeAsync(() => {
+  it('should not render <p-message> before the control is touched', fakeAsync(() => {
     const fixture = buildFixture();
     fixture.componentInstance.form.get('field')?.setValidators(Validators.required);
     fixture.componentInstance.form.get('field')?.updateValueAndValidity();
@@ -83,7 +68,7 @@ describe('I18nFieldErrorDirective', () => {
     expect(getInput(fixture).nativeElement.hasAttribute('aria-invalid')).toBe(false);
   }));
 
-  it('exibe mensagem do catálogo i18n para o validator `required` após touched', fakeAsync(() => {
+  it('should show i18n catalog message for `required` validator after touched', fakeAsync(() => {
     const fixture = buildFixture();
     const control = getControl(fixture);
     control.setValidators(Validators.required);
@@ -98,7 +83,7 @@ describe('I18nFieldErrorDirective', () => {
     expect(getInput(fixture).nativeElement.getAttribute('aria-invalid')).toBe('true');
   }));
 
-  it('formata args do validator `minlength` na mensagem do catálogo', fakeAsync(() => {
+  it('should format `minlength` validator args in catalog message', fakeAsync(() => {
     const fixture = buildFixture();
     const control = getControl(fixture);
     control.setValidators(Validators.minLength(4));
@@ -110,43 +95,43 @@ describe('I18nFieldErrorDirective', () => {
     expect(getMessage(fixture)?.getAttribute('ng-reflect-text')).toBe('Mínimo de 4 caracteres');
   }));
 
-  it('usa a string crua quando o validator custom devolve um literal', fakeAsync(() => {
+  it('should use raw string when custom validator returns a literal', fakeAsync(() => {
     const fixture = buildFixture();
     const control = getControl(fixture);
-    control.setValidators(() => ({ custom: 'mensagem direta do validator' }));
+    control.setValidators(() => ({ custom: 'validator literal message' }));
     control.updateValueAndValidity();
     control.markAsTouched();
     tick();
     fixture.detectChanges();
 
-    expect(getMessage(fixture)?.getAttribute('ng-reflect-text')).toBe('mensagem direta do validator');
+    expect(getMessage(fixture)?.getAttribute('ng-reflect-text')).toBe('validator literal message');
   }));
 
-  it('usa `error.message` quando o validator custom devolve um objeto com `message`', fakeAsync(() => {
+  it('should use `error.message` when custom validator returns object with `message`', fakeAsync(() => {
     const fixture = buildFixture();
     const control = getControl(fixture);
-    control.setValidators(() => ({ custom: { message: 'via objeto', extra: 1 } }));
+    control.setValidators(() => ({ custom: { message: 'via object', extra: 1 } }));
     control.updateValueAndValidity();
     control.markAsTouched();
     tick();
     fixture.detectChanges();
 
-    expect(getMessage(fixture)?.getAttribute('ng-reflect-text')).toBe('via objeto');
+    expect(getMessage(fixture)?.getAttribute('ng-reflect-text')).toBe('via object');
   }));
 
-  it('respeita o nome do validator como fallback quando nada combina', fakeAsync(() => {
+  it('should use validator name as fallback when nothing matches', fakeAsync(() => {
     const fixture = buildFixture();
     const control = getControl(fixture);
-    control.setValidators(() => ({ obscuroSemTraducao: true }));
+    control.setValidators(() => ({ obscureNoTranslation: true }));
     control.updateValueAndValidity();
     control.markAsTouched();
     tick();
     fixture.detectChanges();
 
-    expect(getMessage(fixture)?.getAttribute('ng-reflect-text')).toBe('obscuroSemTraducao');
+    expect(getMessage(fixture)?.getAttribute('ng-reflect-text')).toBe('obscureNoTranslation');
   }));
 
-  it('reage a `markAllAsTouched()` no FormGroup (patch do markAsTouched do controle)', fakeAsync(() => {
+  it('should react to FormGroup markAllAsTouched() (patched control markAsTouched)', fakeAsync(() => {
     const fixture = buildFixture();
     const control = getControl(fixture);
     control.setValidators(Validators.required);
@@ -162,7 +147,7 @@ describe('I18nFieldErrorDirective', () => {
     expect(getMessage(fixture)?.getAttribute('ng-reflect-text')).toBe('Campo obrigatório');
   }));
 
-  it('remove a mensagem e o aria-invalid quando o erro some', fakeAsync(() => {
+  it('should remove message and aria-invalid when error clears', fakeAsync(() => {
     const fixture = buildFixture();
     const control = getControl(fixture);
     control.setValidators(Validators.required);
@@ -180,7 +165,7 @@ describe('I18nFieldErrorDirective', () => {
     expect(getInput(fixture).nativeElement.hasAttribute('aria-invalid')).toBe(false);
   }));
 
-  it('restaura `markAsTouched` original quando a diretiva é destruída', fakeAsync(() => {
+  it('should restore original markAsTouched when directive is destroyed', fakeAsync(() => {
     const fixture = buildFixture();
     const control = getControl(fixture);
     tick();
