@@ -91,8 +91,6 @@ UI test credentials: same user `admin` / `admin123` (or whatever the API seed co
 
 **Diagrams (Mermaid):** [ARCHITECTURE.md](ARCHITECTURE.md) — monorepo overview, frontend dependency ladder, auth/bootstrap sequences, routing, deals data flow, and backend layers.
 
-**Decision records (frontend, Portuguese):** index at [`DECISOES.md`](DECISOES.md).
-
 ## Project layout
 
 ```text
