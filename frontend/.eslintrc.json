@@ -1,0 +1,47 @@
+{
+  "root": true,
+  "ignorePatterns": ["**/*"],
+  "plugins": ["@nx"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": ["plugin:@nx/typescript", "plugin:import/recommended"],
+      "rules": {
+        "import/named": "off",
+        "import/no-unresolved": "off",
+        "import/no-relative-parent-imports": "error",
+        "import/order": [
+          "error",
+          {
+            "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
+            "newlines-between": "always",
+            "alphabetize": { "order": "asc", "caseInsensitive": true }
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "extends": ["plugin:@nx/javascript"],
+      "rules": {}
+    },
+    {
+      "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx"],
+      "env": { "jest": true },
+      "rules": {}
+    },
+    {
+      "files": [
+        "libs/i18n/src/lib/modules/i18n/services/i18n.service.ts",
+        "libs/i18n/src/lib/modules/i18n/services/i18n.service.spec.ts",
+        "libs/i18n/src/lib/modules/i18n/models/i18n.models.ts",
+        "libs/i18n/src/lib/modules/i18n/locales/**/*.ts"
+      ],
+      "rules": { "import/no-relative-parent-imports": "off" }
+    },
+    {
+      "files": ["apps/intapp-suite/src/app/app.config.ts"],
+      "rules": { "import/no-relative-parent-imports": "off" }
+    }
+  ]
+}

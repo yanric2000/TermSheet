@@ -1,0 +1,43 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: termsheet-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-termsheet}
+      POSTGRES_USER: ${POSTGRES_USER:-termsheet}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-termsheet}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-termsheet} -d ${POSTGRES_DB:-termsheet}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    expose:
+      - "5432"
+    ports:
+      - "${POSTGRES_PORT:-5433}:5432"
+
+  api:
+    build:
+      context: ./backend
+    container_name: termsheet-api
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-termsheet}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-termsheet}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-termsheet}
+      JWT_SECRET: ${JWT_SECRET:-please-change-this-secret-in-production-it-must-be-32+bytes}
+      JWT_ACCESS_EXPIRATION: ${JWT_ACCESS_EXPIRATION:-900000}
+      JWT_REFRESH_EXPIRATION: ${JWT_REFRESH_EXPIRATION:-604800000}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      COOKIE_SAMESITE: ${COOKIE_SAMESITE:-Lax}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:4200}
+    ports:
+      - "${API_PORT:-8080}:8080"
+
+volumes:
+  pgdata:

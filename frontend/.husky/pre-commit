@@ -1,0 +1,5 @@
+cd frontend
+npm run lint:affected:fix -- --uncommitted
+git add -A
+npx lint-staged
+npm run lint:deps

@@ -1,0 +1,43 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@intapp/util": ["libs/util/src/index.ts"],
+      "@intapp/util/storage": ["libs/util/src/lib/modules/storage"],
+      "@intapp/util/http": ["libs/util/src/lib/modules/http"],
+
+      "@intapp/auth": ["libs/auth/src/index.ts"],
+      "@intapp/auth/models": ["libs/auth/src/lib/modules/auth/models"],
+      "@intapp/auth/services": ["libs/auth/src/lib/modules/auth/services"],
+      "@intapp/auth/guards": ["libs/auth/src/lib/modules/auth/guards"],
+      "@intapp/auth/interceptors": ["libs/auth/src/lib/modules/auth/interceptors"],
+      "@intapp/auth/stores": ["libs/auth/src/lib/modules/auth/stores"],
+      "@intapp/auth/tokens": ["libs/auth/src/lib/modules/auth/tokens"],
+
+      "@intapp/i18n": ["libs/i18n/src/index.ts"],
+      "@intapp/i18n/services": ["libs/i18n/src/lib/modules/i18n/services"],
+      "@intapp/i18n/models": ["libs/i18n/src/lib/modules/i18n/models"],
+      "@intapp/i18n/utils": ["libs/i18n/src/lib/modules/i18n/utils"],
+      "@intapp/i18n/form/components": ["libs/i18n/src/lib/modules/form/components"],
+      "@intapp/i18n/form/directives": ["libs/i18n/src/lib/modules/form/directives"],
+      "@intapp/i18n/form/utils": ["libs/i18n/src/lib/modules/form/utils"],
+
+      "@intapp/termsheet": ["libs/termsheet/src/index.ts"],
+      "@intapp/termsheet/deal/constants": ["libs/termsheet/src/lib/modules/deal/constants"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

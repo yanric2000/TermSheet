@@ -1,0 +1,25 @@
+.deals-list-page {
+  max-width: 720px;
+  margin: 3rem auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.deals-header {
+  h1 {
+    margin: 0;
+    font-size: 2rem;
+  }
+}
+
+.welcome {
+  margin: 0.5rem 0 0;
+  color: var(--text-color-secondary, #64748b);
+}
+
+.placeholder-message {
+  font-size: 1rem;
+  color: var(--text-color-secondary, #64748b);
+}

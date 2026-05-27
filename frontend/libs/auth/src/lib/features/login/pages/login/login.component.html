@@ -1,0 +1,38 @@
+<main class="login-wrapper">
+  <p-card styleClass="login-card">
+    <header class="login-header">
+      <h1 class="login-title">{{ labels.productName }}</h1>
+      <p class="login-subtitle">{{ labels.subtitle }}</p>
+    </header>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="login-form" novalidate>
+      <div class="login-field">
+        <label for="username">{{ labels.username }}</label>
+        <input pInputText id="username" type="text" formControlName="username" autocomplete="username" autofocus />
+      </div>
+
+      <div class="login-field">
+        <label for="password">{{ labels.password }}</label>
+        <p-password
+          inputId="password"
+          formControlName="password"
+          [feedback]="false"
+          [toggleMask]="true"
+          autocomplete="current-password"
+          styleClass="login-password"
+          inputStyleClass="login-password-input"
+        />
+      </div>
+
+      <p-button
+        type="submit"
+        [label]="labels.submit"
+        styleClass="login-submit"
+        [loading]="auth.loading()"
+        [disabled]="form.invalid || auth.loading()"
+      />
+    </form>
+  </p-card>
+
+  <footer class="login-footer">{{ labels.footer }}</footer>
+</main>

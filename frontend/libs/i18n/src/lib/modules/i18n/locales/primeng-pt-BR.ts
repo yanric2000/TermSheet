@@ -1,0 +1,74 @@
+import type { Translation } from 'primeng/api';
+
+/**
+ * Mapa de tradução do PrimeNG para pt-BR.
+ *
+ * Arquivo separado dos demais para que o code-splitting do bundler emita
+ * um chunk dedicado por idioma — usuários em pt-BR não baixam strings
+ * en-US/es-ES no boot.
+ *
+ * Cobre o essencial que aparece nas features atuais (campo de senha, filtros
+ * de tabela, calendário). Conforme novos componentes do PrimeNG forem usados
+ * (FileUpload, Paginator com aria, etc.), basta acrescentar as chaves
+ * correspondentes — todas são opcionais na interface `Translation`.
+ */
+export const PRIMENG_PT_BR: Translation = {
+  accept: 'Sim',
+  reject: 'Não',
+  choose: 'Escolher',
+  upload: 'Enviar',
+  cancel: 'Cancelar',
+  clear: 'Limpar',
+  apply: 'Aplicar',
+  matchAll: 'Coincide com tudo',
+  matchAny: 'Coincide com qualquer',
+  addRule: 'Adicionar regra',
+  removeRule: 'Remover regra',
+  startsWith: 'Começa com',
+  contains: 'Contém',
+  notContains: 'Não contém',
+  endsWith: 'Termina com',
+  equals: 'Igual',
+  notEquals: 'Diferente',
+  noFilter: 'Sem filtro',
+  lt: 'Menor que',
+  lte: 'Menor ou igual a',
+  gt: 'Maior que',
+  gte: 'Maior ou igual a',
+  is: 'É',
+  isNot: 'Não é',
+  before: 'Antes',
+  after: 'Depois',
+  dateIs: 'Data é',
+  dateIsNot: 'Data não é',
+  dateBefore: 'Data antes de',
+  dateAfter: 'Data depois de',
+  weak: 'Fraca',
+  medium: 'Média',
+  strong: 'Forte',
+  passwordPrompt: 'Digite uma senha',
+  emptyMessage: 'Nenhum resultado encontrado',
+  emptyFilterMessage: 'Nenhum resultado encontrado',
+  today: 'Hoje',
+  weekHeader: 'Sem',
+  firstDayOfWeek: 0,
+  dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+  dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+  dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+  monthNames: [
+    'Janeiro',
+    'Fevereiro',
+    'Março',
+    'Abril',
+    'Maio',
+    'Junho',
+    'Julho',
+    'Agosto',
+    'Setembro',
+    'Outubro',
+    'Novembro',
+    'Dezembro',
+  ],
+  monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+  dateFormat: 'dd/mm/yy',
+};

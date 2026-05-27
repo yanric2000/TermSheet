@@ -1,0 +1,12 @@
+{
+  "name": "@intapp/termsheet",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/core": "^17.3.0",
+    "@angular/router": "^17.3.0",
+    "@intapp/auth": "0.0.1",
+    "@intapp/i18n": "0.0.1",
+    "primeng": "^17.18.0"
+  },
+  "sideEffects": false
+}

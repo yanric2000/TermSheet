@@ -1,0 +1,16 @@
+{
+  "arrowParens": "avoid",
+  "bracketSameLine": false,
+  "bracketSpacing": true,
+  "htmlSelfClosing": false,
+  "jsxSelfClosing": false,
+  "plugins": [
+    "prettier-plugin-angular"
+  ],
+  "printWidth": 120,
+  "semi": true,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "all",
+  "useTabs": false
+}

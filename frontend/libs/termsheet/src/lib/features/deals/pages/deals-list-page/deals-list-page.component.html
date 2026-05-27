@@ -1,0 +1,14 @@
+<main class="deals-list-page">
+  <header class="deals-header">
+    <h1>{{ labels().title }}</h1>
+    @if (auth.user()) {
+      <p class="welcome">{{ greeting() }}</p>
+    }
+  </header>
+
+  <p class="placeholder-message">
+    {{ labels().placeholder }}
+  </p>
+
+  <p-button [label]="labels().logout" icon="pi pi-sign-out" severity="secondary" (onClick)="logout()" />
+</main>
