@@ -87,9 +87,11 @@ npx nx test auth       # tests for a specific lib
 
 UI test credentials: same user `admin` / `admin123` (or whatever the API seed configures).
 
-## Architecture decisions (frontend)
+## Architecture
 
-Architecture, auth, i18n, termsheet, util, and testing decisions live at the repository root. Index: [`DECISOES.md`](DECISOES.md) (Portuguese).
+**Diagrams (Mermaid):** [ARCHITECTURE.md](ARCHITECTURE.md) — monorepo overview, frontend dependency ladder, auth/bootstrap sequences, routing, deals data flow, and backend layers.
+
+**Decision records (frontend, Portuguese):** index at [`DECISOES.md`](DECISOES.md).
 
 ## Project layout
 
@@ -102,7 +104,6 @@ TermSheet/
 ├── docker-compose.yml
 ├── .env.example
 ├── challenge.md          Challenge brief
-├── DECISOES*.md          Frontend decision docs (Portuguese)
 └── README.md
 ```
 
