@@ -7,9 +7,8 @@ import { ToastModule } from 'primeng/toast';
  *
  * Mantém o `<p-toast>` global no topo da árvore para que qualquer feature
  * (e o `apiErrorToastInterceptor`) consiga renderizar notificações sem
- * precisar declarar `ToastModule` em cada componente. `MessageService` já é
- * `providedIn: 'root'` em `primeng/api` — basta o componente `<p-toast>`
- * estar montado uma vez.
+ * precisar declarar `ToastModule` em cada componente. `MessageService` é
+ * registrado em `app.config.ts` — basta o `<p-toast>` estar montado uma vez.
  */
 @Component({
   selector: 'app-root',

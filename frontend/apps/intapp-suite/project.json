@@ -4,20 +4,32 @@
   "projectType": "application",
   "prefix": "app",
   "sourceRoot": "apps/intapp-suite/src",
-  "tags": ["scope:app", "type:app"],
+  "tags": [
+    "scope:app",
+    "type:app"
+  ],
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/intapp-suite",
         "index": "apps/intapp-suite/src/index.html",
         "main": "apps/intapp-suite/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [
+          "zone.js"
+        ],
         "tsConfig": "apps/intapp-suite/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": ["apps/intapp-suite/src/favicon.ico", "apps/intapp-suite/src/assets"],
-        "styles": ["apps/intapp-suite/src/styles.scss"],
+        "assets": [
+          "apps/intapp-suite/src/favicon.ico",
+          "apps/intapp-suite/src/assets"
+        ],
+        "styles": [
+          "apps/intapp-suite/src/styles.scss"
+        ],
         "scripts": []
       },
       "configurations": {
@@ -79,7 +91,9 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "jestConfig": "apps/intapp-suite/jest.config.ts"
       }

@@ -1,1 +1,1 @@
-export * from './deals.constants';
+export * from '@intapp/termsheet/deal/constants';

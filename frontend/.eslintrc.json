@@ -5,7 +5,11 @@
   "overrides": [
     {
       "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nx/typescript", "plugin:import/recommended"],
+      "extends": [
+        "plugin:@nx/typescript",
+        "plugin:import/recommended",
+        "plugin:prettier/recommended"
+      ],
       "rules": {
         "import/named": "off",
         "import/no-unresolved": "off",

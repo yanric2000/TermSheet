@@ -1,5 +1,11 @@
 import { HttpParams } from '@angular/common/http';
+import { GetAllParamsType, GetAllRequiredParamsType, HttpGetAllRequestType } from '@intapp/util/models';
 import { map, Observable, of, take, tap } from 'rxjs';
+
+export const paginacaoPadrao: GetAllRequiredParamsType = {
+  page: 1,
+  pageSize: 10,
+} as const;
 
 export class HttpGetAllRequest<T extends { id: string }, Filtros extends GetAllRequiredParamsType = GetAllParamsType> {
   public conjuntoItens = new Map<string, T>();
@@ -7,8 +13,6 @@ export class HttpGetAllRequest<T extends { id: string }, Filtros extends GetAllR
   public items: T[] = [];
   public filtros = { ...paginacaoPadrao } as Filtros;
 
-  public page = 1;
-  public pageSize = 10;
   public hasNext = false;
 
   private getAll$: HttpGetAllRequestType<T>;
@@ -17,9 +21,9 @@ export class HttpGetAllRequest<T extends { id: string }, Filtros extends GetAllR
     this.getAll$ = getAll$;
   }
 
-  getAll(): Observable<T[]> {
-    const params = this.filtros;
-    return this.getAll$(params).pipe(
+  getAll(filtros: Filtros): Observable<T[]> {
+    this.filtros = filtros;
+    return this.getAll$(filtros).pipe(
       map(result => {
         this.hasNext = result.hasNext ?? false;
         return result.items;
@@ -28,15 +32,15 @@ export class HttpGetAllRequest<T extends { id: string }, Filtros extends GetAllR
     );
   }
 
-  reset(): Observable<T[]> {
-    this.page = 1;
-    return this.getAll().pipe(tap((itens: T[]) => this.definirItens(itens)));
+  reset(filtros: Omit<Filtros, 'page'> = {} as Omit<Filtros, 'page'>): Observable<T[]> {
+    const params = { ...this.filtros, ...filtros, page: 1 };
+    return this.getAll(params).pipe(tap((itens: T[]) => this.definirItens(itens)));
   }
 
   more(onlyMoreResults = false): Observable<T[]> {
     if (this.hasNext) {
-      this.page += 1;
-      return this.getAll().pipe(
+      const params = { ...this.filtros, page: this.filtros.page + 1 };
+      return this.getAll(params).pipe(
         map((itens: T[]) => {
           this.concatenarItens(itens);
           return onlyMoreResults ? itens : this.items;
@@ -52,16 +56,16 @@ export class HttpGetAllRequest<T extends { id: string }, Filtros extends GetAllR
    * @return Retorno assíncrono dos registros encontrados
    */
   refazerBuscaAtual() {
-    const paginaAtual = this.page + 0;
-    const tamanhoPaginaAtual = this.pageSize + 0;
-    this.page = 1;
-    this.pageSize = paginaAtual * tamanhoPaginaAtual;
+    const paginaAtual = this.filtros.page + 0;
+    const tamanhoPaginaAtual = this.filtros.pageSize + 0;
+    const newPage = 1;
+    const newPageSize = paginaAtual * tamanhoPaginaAtual;
+    const params: Filtros = { ...this.filtros, page: newPage, pageSize: newPageSize };
 
-    return this.getAll().pipe(
+    return this.getAll(params).pipe(
       map(retorno => {
         this.definirItens(retorno);
-        this.page = paginaAtual;
-        this.pageSize = tamanhoPaginaAtual;
+        this.filtros = { ...this.filtros, page: paginaAtual, pageSize: tamanhoPaginaAtual };
         return retorno;
       }),
     );
@@ -99,26 +103,3 @@ export function converterObjetoParaParametrosHttp(params: { [key: string]: any }
   });
   return httpParams;
 }
-
-export const paginacaoPadrao: GetAllRequiredParamsType = {
-  page: 1,
-  pageSize: 10,
-} as const;
-
-export interface IApiCollectionResponse<T> {
-  hasNext?: boolean;
-  items: Array<T>;
-}
-
-export type GetAllRequiredParamsType = {
-  page: number;
-  pageSize: number;
-};
-
-export type GetAllGenericParamsType = {
-  [key: string]: string | number | boolean | string[] | number[] | boolean[];
-};
-
-export type GetAllParamsType = GetAllRequiredParamsType & GetAllGenericParamsType;
-
-export type HttpGetAllRequestType<T> = (params: GetAllParamsType) => Observable<IApiCollectionResponse<T>>;

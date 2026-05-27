@@ -139,7 +139,7 @@ Example search:
 
 ```bash
 TOKEN="<paste accessToken here>"
-curl -s "http://localhost:8080/api/deals?name=tower&minPrice=5000000&maxPrice=20000000&page=0&size=10&sort=purchasePrice,desc" \
+curl -s "http://localhost:8080/api/deals?name=tower&minPrice=5000000&maxPrice=20000000&page=1&size=10&sort=purchasePrice,desc" \
      -H "Authorization: Bearer $TOKEN" | jq
 ```
 

@@ -1,0 +1,36 @@
+<p-table
+  [value]="deals()"
+  [loading]="loading()"
+  [paginator]="true"
+  [lazy]="true"
+  [totalRecords]="totalRecords()"
+  [first]="(pagination().page - 1) * pagination().pageSize"
+  [rows]="pagination().pageSize"
+  [rowsPerPageOptions]="[5, 10, 25]"
+  responsiveLayout="scroll"
+  (onLazyLoad)="onLazyLoad($event)"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th scope="col">{{ labels().name }}</th>
+      <th scope="col">{{ labels().purchasePrice }}</th>
+      <th scope="col">{{ labels().address }}</th>
+      <th scope="col">{{ labels().noi }}</th>
+      <th scope="col">{{ labels().capRate }}</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-deal>
+    <tr>
+      <td><span [innerHTML]="deal.name | highlightMatch: filters().name"></span></td>
+      <td>{{ deal.purchasePrice | currency: 'USD' }}</td>
+      <td>{{ deal.address }}</td>
+      <td>{{ deal.noi | currency: 'USD' }}</td>
+      <td>{{ calcCapRate(deal.noi, deal.purchasePrice) | percent: '1.2-2' }}</td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="5">{{ labels().empty }}</td>
+    </tr>
+  </ng-template>
+</p-table>

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '@intapp/auth/services';
 import { I18nFieldErrorDirective, I18nService } from '@intapp/i18n';
@@ -32,7 +32,6 @@ import { PasswordModule } from 'primeng/password';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, CardModule, InputTextModule, PasswordModule, ButtonModule, I18nFieldErrorDirective],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   private readonly fb = inject(FormBuilder);
@@ -44,14 +43,14 @@ export class LoginComponent {
     password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(100)]],
   });
 
-  protected readonly labels = {
+  protected readonly labels = computed(() => ({
     productName: this.i18n.t('productName'),
     subtitle: this.i18n.t('loginSubtitle'),
     username: this.i18n.t('loginUsernameLabel'),
     password: this.i18n.t('loginPasswordLabel'),
     submit: this.i18n.t('loginSubmit'),
     footer: `${this.i18n.t('productName')} · ${this.i18n.t('productTagline')}`,
-  } as const;
+  }));
 
   protected submit(): void {
     if (this.form.invalid) {

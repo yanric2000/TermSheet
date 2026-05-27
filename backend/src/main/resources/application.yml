@@ -1,6 +1,10 @@
 spring:
   application:
     name: termsheet-api
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/termsheet}
     username: ${SPRING_DATASOURCE_USERNAME:termsheet}

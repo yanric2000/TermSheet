@@ -50,7 +50,18 @@ export interface ITranslations {
   dealsTitle: string;
   dealsGreeting: string;
   dealsLogout: string;
-  dealsPlaceholderMessage: string;
+  dealsColumnName: string;
+  dealsColumnPurchasePrice: string;
+  dealsColumnAddress: string;
+  dealsColumnNoi: string;
+  dealsColumnCapRate: string;
+  dealsFilterSearchPlaceholder: string;
+  dealsFilterOperatorLabel: string;
+  dealsFilterOperatorGte: string;
+  dealsFilterOperatorLte: string;
+  dealsFilterPricePlaceholder: string;
+  dealsFilterClear: string;
+  dealsEmpty: string;
 
   // page titles — consumidos pelo `I18nService.pageTitle(...)` em resolvers de rota
   pageTitleLogin: string;

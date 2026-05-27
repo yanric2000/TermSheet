@@ -1,38 +1,48 @@
-<main class="login-wrapper">
-  <p-card styleClass="login-card">
-    <header class="login-header">
-      <h1 class="login-title">{{ labels.productName }}</h1>
-      <p class="login-subtitle">{{ labels.subtitle }}</p>
+<main
+  class="flex min-h-screen flex-col items-center justify-center gap-6 bg-gradient-to-br from-slate-50 to-slate-100 p-6"
+>
+  <p-card styleClass="w-full max-w-[420px] rounded-xl shadow-lg">
+    <header class="mb-6 text-center">
+      <h1 class="m-0 mb-2 text-3xl font-bold tracking-tight text-slate-900">{{ labels().productName }}</h1>
+      <p class="m-0 text-sm text-slate-500">{{ labels().subtitle }}</p>
     </header>
 
-    <form [formGroup]="form" (ngSubmit)="submit()" class="login-form" novalidate>
-      <div class="login-field">
-        <label for="username">{{ labels.username }}</label>
-        <input pInputText id="username" type="text" formControlName="username" autocomplete="username" autofocus />
+    <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-5" novalidate>
+      <div class="flex flex-col gap-1.5">
+        <label for="username" class="text-sm font-medium text-slate-900">{{ labels().username }}</label>
+        <input
+          pInputText
+          id="username"
+          type="text"
+          formControlName="username"
+          autocomplete="username"
+          autofocus
+          class="w-full"
+        />
       </div>
 
-      <div class="login-field">
-        <label for="password">{{ labels.password }}</label>
+      <div class="flex flex-col gap-1.5">
+        <label for="password" class="text-sm font-medium text-slate-900">{{ labels().password }}</label>
         <p-password
           inputId="password"
           formControlName="password"
           [feedback]="false"
           [toggleMask]="true"
           autocomplete="current-password"
-          styleClass="login-password"
-          inputStyleClass="login-password-input"
+          styleClass="w-full"
+          inputStyleClass="w-full"
         />
       </div>
 
       <p-button
         type="submit"
-        [label]="labels.submit"
-        styleClass="login-submit"
+        [label]="labels().submit"
+        styleClass="w-full"
         [loading]="auth.loading()"
         [disabled]="form.invalid || auth.loading()"
       />
     </form>
   </p-card>
 
-  <footer class="login-footer">{{ labels.footer }}</footer>
+  <footer class="text-[0.8125rem] text-slate-500">{{ labels().footer }}</footer>
 </main>

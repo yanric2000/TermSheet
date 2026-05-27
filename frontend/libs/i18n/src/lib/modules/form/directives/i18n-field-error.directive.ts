@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   type ComponentRef,
   DestroyRef,
   Directive,
@@ -54,7 +55,7 @@ import { Subject, merge, startWith } from 'rxjs';
   selector: '[formControlName], [formControl]',
   standalone: true,
 })
-export class I18nFieldErrorDirective {
+export class I18nFieldErrorDirective implements AfterViewInit {
   private readonly ngControl = inject(NgControl, { self: true });
   private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly renderer = inject(Renderer2);
@@ -90,13 +91,13 @@ export class I18nFieldErrorDirective {
   private blurUnlisten: (() => void) | null = null;
 
   constructor() {
-    // `NgControl.control` é populado durante o `ngOnInit` do
-    // `FormControlName`/`FormControlDirective`. Esperamos um microtask
-    // para garantir que o setup veio depois — mesmo padrão usado pelo
-    // `MatFormFieldControl` interno do Angular Material.
-    queueMicrotask(() => this.setup());
-
     this.destroyRef.onDestroy(() => this.teardown());
+  }
+
+  ngAfterViewInit(): void {
+    // `NgControl.control` é populado durante o `ngOnInit` do
+    // `FormControlName`/`FormControlDirective`.
+    this.setup();
   }
 
   private setup(): void {
@@ -132,9 +133,14 @@ export class I18nFieldErrorDirective {
   }
 
   private update(control: AbstractControl): void {
+    console.log('update -> ', control);
+    console.log('comp ref -> ', this.componentRef);
+
     if (!this.componentRef) return;
 
     const message = resolveFieldErrorMessage(control, this.i18n);
+    console.log('message -> ', message);
+
     this.componentRef.setInput('message', message);
 
     if (message) {

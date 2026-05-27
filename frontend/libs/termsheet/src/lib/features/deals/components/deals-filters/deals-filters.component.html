@@ -1,0 +1,27 @@
+<form class="flex flex-wrap items-center gap-4" [formGroup]="form" (ngSubmit)="$event.preventDefault()">
+  <span class="p-input-icon-left min-w-[220px]">
+    <i class="pi pi-search" aria-hidden="true"></i>
+    <input pInputText type="search" formControlName="name" [placeholder]="labels().searchPlaceholder" />
+  </span>
+
+  <p-dropdown
+    formControlName="operator"
+    [options]="operatorOptions()"
+    optionLabel="label"
+    optionValue="value"
+    [placeholder]="labels().operatorLabel"
+    [showClear]="true"
+  />
+
+  <p-inputNumber
+    formControlName="value"
+    mode="currency"
+    currency="USD"
+    locale="en-US"
+    [placeholder]="labels().pricePlaceholder"
+  />
+
+  @if (hasActiveFilters()) {
+    <p-button type="button" [label]="labels().clear" severity="secondary" (onClick)="onClear()" />
+  }
+</form>

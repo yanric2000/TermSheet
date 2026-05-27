@@ -1,5 +1,12 @@
 cd frontend
-npm run lint:affected:fix -- --uncommitted
-git add -A
-npx lint-staged
+knownFilesChanged=$(
+  git diff --staged --diff-filter=ACMT --name-only |
+    grep -E '\.(ts|js|html)$' |
+    sed 's|^frontend/||' |
+    awk -v d=',' '{s=(NR==1?s:s d)$0}END{print s}' ||
+    true
+)
+if [ -n "$knownFilesChanged" ]; then
+  npm run lint:fix -- --lintFilePatterns="$knownFilesChanged"
+fi
 npm run lint:deps

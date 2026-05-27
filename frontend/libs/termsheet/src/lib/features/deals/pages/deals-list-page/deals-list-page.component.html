@@ -1,14 +1,27 @@
-<main class="deals-list-page">
-  <header class="deals-header">
-    <h1>{{ labels().title }}</h1>
-    @if (auth.user()) {
-      <p class="welcome">{{ greeting() }}</p>
-    }
+<main class="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-8">
+  <header class="flex flex-wrap items-start justify-between gap-4">
+    <div>
+      <h1 class="m-0 text-3xl font-semibold">{{ labels().title }}</h1>
+      @if (auth.user()) {
+        <p class="mt-2 text-slate-500">{{ greeting() }}</p>
+      }
+    </div>
+    <p-button [label]="labels().logout" icon="pi pi-sign-out" severity="secondary" (onClick)="logout()" />
   </header>
 
-  <p class="placeholder-message">
-    {{ labels().placeholder }}
-  </p>
+  <tsh-deals-filters
+    [filters]="store.filters()"
+    (filtersChange)="store.applyFilters($event)"
+    (clear)="store.applyFilters(null)"
+  />
 
-  <p-button [label]="labels().logout" icon="pi pi-sign-out" severity="secondary" (onClick)="logout()" />
+  <tsh-deals-table
+    [deals]="store.entities()"
+    [filters]="store.filters()"
+    [pagination]="store.pagination()"
+    [loading]="store.loading()"
+    [totalRecords]="store.totalElements()"
+    (pageChange)="store.setPage($event)"
+    (pageSizeChange)="store.setPageSize($event)"
+  />
 </main>

@@ -1,2 +1,7 @@
-export * from './lib/features/util.component';
-export { BrowserStorageService } from './lib/modules/storage/services/browser-storage.service';
+/**
+ * API pública da @intapp/util.
+ */
+export * from './lib/modules/http';
+export * from './lib/modules/models';
+export * from './lib/modules/signals';
+export * from './lib/modules/storage';
