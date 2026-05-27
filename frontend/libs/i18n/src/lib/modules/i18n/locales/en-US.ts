@@ -47,6 +47,11 @@ export const enUS: ITranslations = {
   dealsFilterPricePlaceholder: 'Amount',
   dealsFilterClear: 'Clear filters',
   dealsEmpty: 'No deals found',
+  dealsCreateButton: 'New deal',
+  dealsCreateDialogTitle: 'Create deal',
+  dealsCreateSubmit: 'Save',
+  dealsCreateCancel: 'Cancel',
+  dealsFieldDescription: 'Description',
 
   // page titles
   pageTitleLogin: 'Sign in',

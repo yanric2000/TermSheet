@@ -1,8 +1,12 @@
-import type { IPagedResult } from '@intapp/util';
+export interface IDealCreateAPI {
+  name: string;
+  purchasePrice: number;
+  address: string;
+  noi: number;
+  description?: string;
+}
 
-import type { IDeal } from './deal.model';
-
-export interface IApiDeal {
+export interface IDealGetAPI {
   id: string;
   name: string;
   purchasePrice: number;
@@ -15,12 +19,10 @@ export interface IApiDeal {
 }
 
 /** Envelope paginado do Spring Data (campos relevantes apenas). */
-export interface IApiDealsPage {
-  content: IApiDeal[];
+export interface IDealPaginationAPI {
+  content: IDealGetAPI[];
   totalElements: number;
   totalPages: number;
   number: number;
   size: number;
 }
-
-export type IDealsPage = IPagedResult<IDeal>;

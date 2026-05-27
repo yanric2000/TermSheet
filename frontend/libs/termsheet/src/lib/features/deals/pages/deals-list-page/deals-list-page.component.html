@@ -6,8 +6,17 @@
         <p class="mt-2 text-slate-500">{{ greeting() }}</p>
       }
     </div>
-    <p-button [label]="labels().logout" icon="pi pi-sign-out" severity="secondary" (onClick)="logout()" />
+    <div class="flex flex-wrap gap-2">
+      <p-button [label]="labels().create" icon="pi pi-plus" (onClick)="openCreateDialog()" />
+      <p-button [label]="labels().logout" icon="pi pi-sign-out" severity="secondary" (onClick)="logout()" />
+    </div>
   </header>
+
+  <tsh-deal-create-dialog
+    [visible]="showCreateDialog()"
+    (visibleChange)="onDialogVisibleChange($event)"
+    (created)="onDealCreated()"
+  />
 
   <tsh-deals-filters
     [filters]="store.filters()"

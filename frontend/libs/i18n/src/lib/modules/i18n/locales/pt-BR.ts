@@ -66,6 +66,11 @@ export const ptBR = {
   dealsFilterPricePlaceholder: 'Valor',
   dealsFilterClear: 'Limpar filtros',
   dealsEmpty: 'Nenhum deal encontrado',
+  dealsCreateButton: 'Novo deal',
+  dealsCreateDialogTitle: 'Cadastrar deal',
+  dealsCreateSubmit: 'Salvar',
+  dealsCreateCancel: 'Cancelar',
+  dealsFieldDescription: 'Descrição',
 
   // page titles — consumidos pelo `I18nService.pageTitle(...)` em resolvers de rota
   pageTitleLogin: 'Login',

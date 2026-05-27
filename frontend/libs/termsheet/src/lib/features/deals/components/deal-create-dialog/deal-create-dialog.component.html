@@ -1,0 +1,73 @@
+<p-dialog
+  [header]="labels().title"
+  [visible]="visible()"
+  [modal]="true"
+  [closable]="!saving()"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="w-full max-w-lg"
+  (visibleChange)="onVisibleChange($event)"
+>
+  <form [formGroup]="form" class="flex flex-col gap-4" (ngSubmit)="submit()" novalidate>
+    <div class="flex flex-col gap-1.5">
+      <label for="deal-name" class="text-sm font-medium text-slate-900">{{ labels().name }}</label>
+      <input pInputText id="deal-name" type="text" formControlName="name" class="w-full" />
+    </div>
+
+    <div class="flex flex-col gap-1.5">
+      <label for="deal-purchase-price" class="text-sm font-medium text-slate-900">{{ labels().purchasePrice }}</label>
+      <p-inputNumber
+        inputId="deal-purchase-price"
+        formControlName="purchasePrice"
+        mode="currency"
+        currency="USD"
+        locale="en-US"
+        class="w-full"
+        styleClass="w-full"
+        inputStyleClass="w-full"
+      />
+    </div>
+
+    <div class="flex flex-col gap-1.5">
+      <label for="deal-address" class="text-sm font-medium text-slate-900">{{ labels().address }}</label>
+      <input pInputText id="deal-address" type="text" formControlName="address" class="w-full" />
+    </div>
+
+    <div class="flex flex-col gap-1.5">
+      <label for="deal-noi" class="text-sm font-medium text-slate-900">{{ labels().noi }}</label>
+      <p-inputNumber
+        inputId="deal-noi"
+        formControlName="noi"
+        mode="currency"
+        currency="USD"
+        locale="en-US"
+        class="w-full"
+        styleClass="w-full"
+        inputStyleClass="w-full"
+      />
+    </div>
+
+    <div class="flex flex-col gap-1.5">
+      <span class="text-sm font-medium text-slate-900">{{ labels().capRate }}</span>
+      <p class="m-0 rounded border border-slate-200 bg-slate-50 px-3 py-2 text-slate-700">
+        {{ capRatePreview() | percent: '1.2-2' }}
+      </p>
+    </div>
+
+    <div class="flex flex-col gap-1.5">
+      <label for="deal-description" class="text-sm font-medium text-slate-900">{{ labels().description }}</label>
+      <textarea pInputTextarea id="deal-description" formControlName="description" rows="3" class="w-full"></textarea>
+    </div>
+
+    <div class="flex justify-end gap-2 pt-2">
+      <p-button
+        type="button"
+        [label]="labels().cancel"
+        severity="secondary"
+        [disabled]="saving()"
+        (onClick)="cancel()"
+      />
+      <p-button type="submit" [label]="labels().submit" [loading]="saving()" [disabled]="form.invalid || saving()" />
+    </div>
+  </form>
+</p-dialog>

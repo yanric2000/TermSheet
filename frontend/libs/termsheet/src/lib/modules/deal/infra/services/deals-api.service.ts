@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { DealAdapter } from '@intapp/termsheet/deal/adapters';
 import { constants } from '@intapp/termsheet/deal/constants';
-import type { IApiDealsPage } from '@intapp/termsheet/deal/models/deal-api.model';
+import type { IDealGetAPI, IDealPaginationAPI, IDealCreateAPI } from '@intapp/termsheet/deal/models/deal-api.model';
 import type { IDeal } from '@intapp/termsheet/deal/models/deal.model';
 import type { DealsFilterValues, IDealsFilters } from '@intapp/termsheet/deal/models/deals-filters.model';
 import {
@@ -22,6 +22,10 @@ export class DealsApiService implements IPagedEntitiesLoader<IDeal, DealsFilterV
     return this.list({ ...pagination, ...filters });
   }
 
+  create(payload: IDealCreateAPI): Observable<IDeal> {
+    return this.http.post<IDealGetAPI>(`/api/${constants.deals}`, payload).pipe(map(dto => this.adapter.toDomain(dto)));
+  }
+
   list(filters: IDealsFilters): Observable<IPagedResult<IDeal>> {
     const params = converterObjetoParaParametrosHttp({
       name: filters.name,
@@ -30,7 +34,7 @@ export class DealsApiService implements IPagedEntitiesLoader<IDeal, DealsFilterV
       page: filters.page,
       size: filters.pageSize,
     });
-    return this.http.get<IApiDealsPage>(`/api/${constants.deals}`, { params }).pipe(
+    return this.http.get<IDealPaginationAPI>(`/api/${constants.deals}`, { params }).pipe(
       map(page => ({
         items: this.adapter.toDomainList(page.content),
         totalElements: page.totalElements,

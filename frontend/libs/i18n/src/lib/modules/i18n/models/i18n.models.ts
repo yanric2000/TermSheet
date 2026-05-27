@@ -62,6 +62,11 @@ export interface ITranslations {
   dealsFilterPricePlaceholder: string;
   dealsFilterClear: string;
   dealsEmpty: string;
+  dealsCreateButton: string;
+  dealsCreateDialogTitle: string;
+  dealsCreateSubmit: string;
+  dealsCreateCancel: string;
+  dealsFieldDescription: string;
 
   // page titles — consumidos pelo `I18nService.pageTitle(...)` em resolvers de rota
   pageTitleLogin: string;
@@ -77,22 +82,6 @@ export type TranslationKey = keyof ITranslations;
 /**
  * Conta `{0}`, `{1}`, ... em um literal string e devolve uma tupla com um
  * slot `string | number` por placeholder.
- *
- * Como funciona:
- *  - Pattern `${string}{${number}}${infer Rest}` casa "qualquer prefixo +
- *    `{<digito>}` + resto" e captura o resto em `Rest`.
- *  - A cada match, anexamos `string | number` no acumulador `Acc` e
- *    recursamos sobre `Rest`. Quando o pattern não casa mais (sem mais
- *    placeholders), devolvemos `Acc`.
- *
- * Limitação: TS limita recursão de Template Literal Types em ~50 níveis. Na
- * prática nenhuma mensagem realista tem 50+ placeholders. Se um dia
- * passarmos disso, basta usar uma estratégia de "tail call" mais agressiva
- * ou cair em `unknown[]`.
- *
- * Observação: a função interna `formatTemplate` aceita qualquer valor e
- * chama `String(v)` — o constraint `string | number` é só conforto na API
- * pública, não obrigação runtime.
  */
 type CountPlaceholders<S extends string, Acc extends unknown[] = []> = S extends `${string}{${number}}${infer Rest}`
   ? CountPlaceholders<Rest, [...Acc, string | number]>
@@ -100,12 +89,6 @@ type CountPlaceholders<S extends string, Acc extends unknown[] = []> = S extends
 
 /**
  * Tupla de argumentos que `t(key, ...)` exige para uma chave específica.
- *
- * Derivada do literal preservado em `ptBR` (graças ao `as const satisfies`).
- * Ex.:
- *   - `TranslationArgs<'loginSubmit'>`   → `[]`
- *   - `TranslationArgs<'minLength'>`     → `[string | number]`
- *   - `TranslationArgs<'dealsGreeting'>` → `[string | number]`
  */
 export type TranslationArgs<K extends TranslationKey> = CountPlaceholders<ITranslations[K]>;
 

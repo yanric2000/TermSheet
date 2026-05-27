@@ -1,8 +1,7 @@
 import { inject, type ProviderToken } from '@angular/core';
 import { patchState, signalStoreFeature, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import * as deepEqual from 'fast-deep-equal';
-import { debounceTime, distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
+import { debounceTime, pipe, switchMap, tap } from 'rxjs';
 
 import { paginacaoPadrao } from '../http/http-get-all.util';
 import type { GetAllRequiredParamsType } from '../models/http-get-all.models';
@@ -41,7 +40,7 @@ export function withPagedEntities<L extends IPagedEntitiesLoader<unknown, Record
 
       const fetch = rxMethod<{ pagination: GetAllRequiredParamsType; filters: TFilters }>(
         pipe(
-          distinctUntilChanged((a, b) => deepEqual(a, b)),
+          tap(algo => console.log('fetch algo -> ', algo)),
           tap(() => patchState(store, { loading: true })),
           debounceTime(300),
           switchMap(({ pagination, filters }) =>

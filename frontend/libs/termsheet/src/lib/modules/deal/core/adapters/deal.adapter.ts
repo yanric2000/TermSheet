@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import type { IApiDeal } from '@intapp/termsheet/deal/models/deal-api.model';
+import type { IDealGetAPI } from '@intapp/termsheet/deal/models/deal-api.model';
 import type { IDeal } from '@intapp/termsheet/deal/models/deal.model';
 
 @Injectable({ providedIn: 'root' })
 export class DealAdapter {
-  toDomain(dto: IApiDeal): IDeal {
+  toDomain(dto: IDealGetAPI): IDeal {
     return {
       id: dto.id,
       name: dto.name,
@@ -15,7 +15,7 @@ export class DealAdapter {
     };
   }
 
-  toDomainList(dtos: readonly IApiDeal[]): IDeal[] {
+  toDomainList(dtos: readonly IDealGetAPI[]): IDeal[] {
     return dtos.map(dto => this.toDomain(dto));
   }
 }

@@ -47,6 +47,11 @@ export const esES: ITranslations = {
   dealsFilterPricePlaceholder: 'Valor',
   dealsFilterClear: 'Limpiar filtros',
   dealsEmpty: 'No se encontraron deals',
+  dealsCreateButton: 'Nuevo deal',
+  dealsCreateDialogTitle: 'Registrar deal',
+  dealsCreateSubmit: 'Guardar',
+  dealsCreateCancel: 'Cancelar',
+  dealsFieldDescription: 'Descripción',
 
   // page titles
   pageTitleLogin: 'Iniciar sesión',

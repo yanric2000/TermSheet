@@ -30,11 +30,17 @@
       "@intapp/util/models": [
         "libs/util/src/lib/modules/models"
       ],
+      "@intapp/util/jest": [
+        "libs/util/src/lib/modules/jest"
+      ],
       "@intapp/auth": [
         "libs/auth/src/index.ts"
       ],
       "@intapp/auth/models": [
         "libs/auth/src/lib/modules/auth/models"
+      ],
+      "@intapp/auth/mocks": [
+        "libs/auth/src/lib/mock"
       ],
       "@intapp/auth/services": [
         "libs/auth/src/lib/modules/auth/services"
@@ -63,6 +69,12 @@
       "@intapp/i18n/utils": [
         "libs/i18n/src/lib/modules/i18n/utils"
       ],
+      "@intapp/i18n/locales": [
+        "libs/i18n/src/lib/modules/i18n/locales"
+      ],
+      "@intapp/i18n/mocks": [
+        "libs/i18n/src/lib/mock"
+      ],
       "@intapp/i18n/form/components": [
         "libs/i18n/src/lib/modules/form/components"
       ],
@@ -74,6 +86,9 @@
       ],
       "@intapp/termsheet": [
         "libs/termsheet/src/index.ts"
+      ],
+      "@intapp/termsheet/mocks": [
+        "libs/termsheet/src/lib/mock"
       ],
       "@intapp/termsheet/deal/constants": [
         "libs/termsheet/src/lib/modules/deal/infra/constants"
@@ -110,6 +125,21 @@
       ],
       "@intapp/util/models/*": [
         "libs/util/src/lib/modules/models/*"
+      ],
+      "@intapp/auth/mocks/*": [
+        "libs/auth/src/lib/mock/*"
+      ],
+      "@intapp/termsheet/mocks/*": [
+        "libs/termsheet/src/lib/mock/*"
+      ],
+      "@intapp/util/jest/*": [
+        "libs/util/src/lib/modules/jest/*"
+      ],
+      "@intapp/i18n/locales/*": [
+        "libs/i18n/src/lib/modules/i18n/locales/*"
+      ],
+      "@intapp/i18n/mocks/*": [
+        "libs/i18n/src/lib/mock/*"
       ]
     }
   },

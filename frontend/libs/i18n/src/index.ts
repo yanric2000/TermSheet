@@ -8,7 +8,7 @@
  */
 export { provideI18n } from './lib/i18n.providers';
 export { I18nService } from './lib/modules/i18n/services/i18n.service';
-export type { ITranslations, Locale, TranslationArgs, TranslationKey } from './lib/modules/i18n/models/i18n.models';
+export type { ITranslations, Locale, TranslationKey } from './lib/modules/i18n/models/i18n.models';
 export { DEFAULT_LOCALE, LOCALE_STORAGE_KEY, SUPPORTED_LOCALES } from './lib/modules/i18n/models/i18n.models';
 
 // form — diretiva e componente para mensagens de erro de validação

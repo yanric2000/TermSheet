@@ -133,13 +133,9 @@ export class I18nFieldErrorDirective implements AfterViewInit {
   }
 
   private update(control: AbstractControl): void {
-    console.log('update -> ', control);
-    console.log('comp ref -> ', this.componentRef);
-
     if (!this.componentRef) return;
 
     const message = resolveFieldErrorMessage(control, this.i18n);
-    console.log('message -> ', message);
 
     this.componentRef.setInput('message', message);
 

@@ -6,7 +6,6 @@ import {
   LOCALE_STORAGE_KEY,
   Locale,
   SUPPORTED_LOCALES,
-  TranslationArgs,
   TranslationKey,
 } from '@intapp/i18n/models';
 import { formatTemplate } from '@intapp/i18n/utils';
@@ -68,41 +67,13 @@ export class I18nService {
     this.syncDocumentLang(initial);
   }
 
-  /**
-   * Resolve uma chave traduzida.
-   *
-   * Generic `K` se infere para o literal passado (`'loginSubmit'`), e
-   * `TranslationArgs<K>` determina a quantidade/tipo dos `args` válidos.
-   *
-   * Exemplos:
-   *   t('loginSubmit')                 → string estática
-   *   t('minLength', 8)                → string dinâmica com 1 placeholder
-   *   t('dealsGreeting', user.name)    → string dinâmica com 1 placeholder
-   *
-   * O cast em `args` é seguro: `TranslationArgs<K>` deriva diretamente do
-   * literal do `ptBR`, então a aridade está garantida em compile-time.
-   * Internamente repassamos para `formatTemplate` que aceita `unknown[]`.
-   */
-  t<K extends TranslationKey>(key: K, ...args: TranslationArgs<K>): string {
+  t<K extends TranslationKey>(key: K, ...args: string[]): string {
     const catalog = this._catalog();
     if (!catalog) return '';
     return formatTemplate(catalog[key], args as readonly unknown[]);
   }
 
-  /**
-   * Compõe um título de página padronizado `${productName} · ${section}`.
-   *
-   * Centraliza a regra de branding em um lugar só — `ResolveFn`s das rotas
-   * usam essa função em vez de concatenar strings na mão.
-   *
-   * O cast localizado abaixo contorna uma limitação do TypeScript: ao
-   * repassar `...args: TranslationArgs<K>` para `this.t<K>(key, ...)`, o
-   * compilador não consegue provar que `TranslationArgs<K>` "casa consigo
-   * mesma" para o mesmo `K` (variância contravariante de tuplas em
-   * posição parametrizada). A aridade/tipagem já foi garantida no call-site
-   * de `pageTitle`, então o cast é seguro.
-   */
-  pageTitle<K extends TranslationKey>(key: K, ...args: TranslationArgs<K>): string {
+  pageTitle<K extends TranslationKey>(key: K, ...args: string[]): string {
     const section = (this.t as (k: K, ...a: unknown[]) => string)(key, ...(args as unknown[]));
     return `${this.t('productName')} · ${section}`;
   }
